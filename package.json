@@ -26,5 +26,8 @@
   "homepage": "https://github.com/whilestevego/animal-advisor#readme",
   "devDependencies": {
     "electron-prebuilt": "^0.35.1"
+  },
+  "engines" : {
+    "node" : "^4.1.1"
   }
 }
