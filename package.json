@@ -4,6 +4,7 @@
   "description": "A desktop application for generating Advice Animals.",
   "main": "entry.js",
   "scripts": {
+    "start": "./node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/whilestevego/animal-advisor/issues"
   },
-  "homepage": "https://github.com/whilestevego/animal-advisor#readme"
+  "homepage": "https://github.com/whilestevego/animal-advisor#readme",
+  "devDependencies": {
+    "electron-prebuilt": "^0.35.1"
+  }
 }
