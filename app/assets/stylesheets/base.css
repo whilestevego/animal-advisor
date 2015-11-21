@@ -1,0 +1,39 @@
+/**********/
+/* Layout */
+/**********/
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+body > section {
+  width: 100%;
+  padding: 0 1em;
+  margin: 1em 0;
+}
+
+/***********/
+/* Content */
+/***********/
+
+#advice-animal {
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Loading States */
+
+.loading {
+  animation: Spin 2s linear 0s infinite;
+}
+
+.placeholder {
+  transform: scale(0.5);
+}
+
+@keyframes Spin {
+  0% { transform: rotate(0deg) scale(0.5); }
+  100% { transform: rotate(360deg) scale(0.5); }
+}
