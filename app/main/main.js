@@ -42,6 +42,13 @@ App.on("ready", function () {
           role: "services",
           submenu: []
         }, {
+          label: "Toggle DevTools",
+          accelerator: "Alt+Command+I",
+          click: function() {
+            mainWindow.show();
+            mainWindow.toggleDevTools();
+          }
+        }, {
           type: "separator"
         }, {
           label: `Hide ${appName}`,
