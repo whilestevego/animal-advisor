@@ -1,7 +1,9 @@
 "use strict";
 
-const Remote = require("remote");
-const pathTo = Remote.getGlobal("pathTo");
+const Remote   = require("remote");
+const pathTo   = Remote.getGlobal("pathTo");
+const Menu     = Remote.require('menu');
+const MenuItem = Remote.require('menu-item');
 
 const AnimalAdvisor = require(`${pathTo.lib}/animal-advisor`);
 const Request       = require("request");
@@ -28,6 +30,11 @@ function setImage (path) {
   sendNotification(path);
 }
 
+function resetAdviceAnimal () {
+  adviceAnimalImg.src = `${pathTo.images}/doge-icon-512.png`;
+  adviceAnimalImg.className = "placeholder";
+}
+
 function loading () {
   adviceAnimalImg.src = `${pathTo.images}/doge-icon-512.png`;
   adviceAnimalImg.className = "loading";
@@ -41,3 +48,23 @@ function sendNotification (path) {
   }
   new Notification(title, options);
 }
+
+const adviceAnimalMenu = new Menu();
+
+adviceAnimalMenu.append(new MenuItem({
+  label: 'Reset',
+  click: resetAdviceAnimal
+}));
+adviceAnimalMenu.append(new MenuItem({
+  label: 'MenuItem1',
+  click: function(menuItem) { console.log(menuItem); console.log('item 1 clicked'); }
+}));
+adviceAnimalMenu.append(new MenuItem({
+  label: 'MenuItem2',
+  type: 'checkbox', checked: true
+}));
+
+adviceAnimalImg.addEventListener('contextmenu', function (event) {
+  event.preventDefault();
+  adviceAnimalMenu.popup(Remote.getCurrentWindow());
+}, false);
