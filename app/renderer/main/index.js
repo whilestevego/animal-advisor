@@ -87,9 +87,19 @@ function setImage (path) {
   console.log("Setting image...");
   adviceAnimalImg.src = path;
   adviceAnimalImg.className = "";
+  sendNotification(path);
 }
 
 function loading () {
   adviceAnimalImg.src = "../../assets/images/doge-icon-512.png";
   adviceAnimalImg.className = "loading";
+}
+
+function sendNotification (path) {
+  const title = "Animal Advisor says..."
+  const options = {
+    body: "Image download complete!",
+    icon: path
+  }
+  new Notification(title, options);
 }
