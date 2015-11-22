@@ -91,7 +91,7 @@ function setImage (path) {
 }
 
 function loading () {
-  adviceAnimalImg.src = "../../assets/images/doge-icon-512.png";
+  adviceAnimalImg.src = `${pathTo.images}/doge-icon-512.png`;
   adviceAnimalImg.className = "loading";
 }
 
