@@ -3,7 +3,7 @@
 const Remote = require("remote");
 const pathTo = Remote.getGlobal("pathTo");
 
-const AnimalAdvisor = require(`${pathTo.lib}/meme`);
+const AnimalAdvisor = require(`${pathTo.lib}/animal-advisor`);
 const Request       = require("request");
 
 const searchQueryInput = document.querySelector("#search-query");
