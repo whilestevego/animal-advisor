@@ -5,6 +5,7 @@
   "main": "entry.js",
   "scripts": {
     "start": "./node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .",
+    "package": "electron-packager . AnimalAdvisor --platform=darwin --arch=x64 --out ./dist --version 0.35.1 --overwrite --icon=./app/assets/images/icon.icns",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/whilestevego/animal-advisor#readme",
   "devDependencies": {
+    "electron-packager": "^5.1.1",
     "electron-prebuilt": "^0.35.1"
   },
   "dependencies": {
@@ -34,7 +36,7 @@
     "q": "^1.4.1",
     "request": "^2.67.0"
   },
-  "engines" : {
-    "node" : "^4.1.1"
+  "engines": {
+    "node": "^4.1.1"
   }
 }
