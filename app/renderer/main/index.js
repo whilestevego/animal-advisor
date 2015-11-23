@@ -8,11 +8,12 @@ const FS      = require("fs");
 const Path    = require("path");
 
 // Electron Modules
-const Shell    = require("shell");
-const Remote   = require("remote");
-const Menu     = Remote.require("menu");
-const MenuItem = Remote.require("menu-item");
-const Dialog   = Remote.require("dialog");
+const Clipboard = require("clipboard");
+const Shell     = require("shell");
+const Remote    = require("remote");
+const Menu      = Remote.require("menu");
+const MenuItem  = Remote.require("menu-item");
+const Dialog    = Remote.require("dialog");
 
 const pathTo   = Remote.getGlobal("pathTo");
 const AnimalAdvisor = require(`${pathTo.lib}/animal-advisor`);
@@ -36,6 +37,7 @@ function setImage (path) {
   console.log("Setting image...");
   adviceAnimalImg.src = path;
   adviceAnimalImg.className = "";
+  Clipboard.writeImage(path);
   sendNotification(path);
 }
 
@@ -50,14 +52,15 @@ function loading () {
 }
 
 function sendNotification (path) {
-  const title = "Animal Advisor says..."
+  const title = "Animal Advisor"
   const options = {
-    body: "Image download complete!",
+    body: "Copied advice animal to clipboard",
     icon: path
   }
   new Notification(title, options);
 }
 
+// Context Menu
 const adviceAnimalMenu = new Menu();
 
 adviceAnimalMenu.append(new MenuItem({
@@ -69,13 +72,26 @@ adviceAnimalMenu.append(new MenuItem({
   click: showSaveImageAsDialog,
   accelerator: "Command+Shift+S"
 }));
+adviceAnimalMenu.append(new MenuItem({ type: "separator" }));
+adviceAnimalMenu.append(new MenuItem({
+  label: "Copy",
+  click: copyToClipboard,
+  accelerator: "Command+C"
+}));
 
 adviceAnimalImg.addEventListener("contextmenu", function (event) {
   event.preventDefault();
   adviceAnimalMenu.popup(Remote.getCurrentWindow());
 }, false);
 
-function showSaveImageAsDialog() {
+// Copy to Clipboard
+function copyToClipboard () {
+  const filePath = event.target.src.replace(/file:\/\//,"");
+  Clipboard.writeImage(filePath);
+}
+
+// Save Image as... Dialog
+function showSaveImageAsDialog () {
   const options = { title: "Save Image as..." };
   Dialog.showSaveDialog(Remote.getCurrentWindow(), options, handleSaveDialog);
 }
@@ -85,10 +101,10 @@ function handleSaveDialog (path) {
   const extension = Path.extname(sourcePath);
   const destinationPath = path + extension;
 
-  copyFile(sourcePath, destinationPath, handleCopy(destinationPath));
+  copyFile(sourcePath, destinationPath, handleFileCopy(destinationPath));
 }
 
-function handleCopy (path) {
+function handleFileCopy (path) {
   return function (error) {
     if (error) {
       Dialog.showErrorBox("Save Image as... failed", error)
