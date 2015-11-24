@@ -4,7 +4,7 @@
   "description": "A desktop application for generating Advice Animals.",
   "main": "entry.js",
   "scripts": {
-    "start": "./node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .",
+    "start": "electron .",
     "package": "electron-packager . AnimalAdvisor --platform=darwin --arch=x64 --out ./dist --version 0.35.1 --overwrite --icon=./app/assets/images/icon.icns",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
