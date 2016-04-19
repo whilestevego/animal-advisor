@@ -63,6 +63,10 @@ Any of following should work. Just replace de text inside `{}` with whatever you
 - `do you want {text} because that'?s how {text}`
 - `i should {text}`
 
+Here's a ugly gif of it in action!
+
+![](http://i.imgur.com/d17csqY.gif)
+
 ## License
 The MIT License (MIT)
 Copyright (c) 2016 Steve Godin
