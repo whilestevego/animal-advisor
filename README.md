@@ -6,21 +6,21 @@ API](https://memecaptain.com/). In early development, use at your own peril.
 
 1. Clone the repo
 
-```sh
-git clone git@github.com:whilestevego/animal-advisor.git
-```
+  ```sh
+  git clone git@github.com:whilestevego/animal-advisor.git
+  ```
 
 2. Install dependencies
 
-```sh
-cd animal-advisor && npm install
-```
+  ```sh
+  cd animal-advisor && npm install
+  ```
 
 3. Run it with
 
-```sh
-npm start
-```
+  ```sh
+  npm start
+  ```
 
 ## Package it
 
