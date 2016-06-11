@@ -26,17 +26,18 @@
   },
   "homepage": "https://github.com/whilestevego/animal-advisor#readme",
   "devDependencies": {
-    "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^0.37.6"
+    "devtron": "^1.2.0",
+    "electron-packager": "^7.0.3",
+    "electron-prebuilt": "^1.2.2"
   },
   "dependencies": {
-    "lodash": "^3.10.1",
-    "lwip": "0.0.8",
+    "jimp": "^0.2.24",
+    "lodash": "^4.13.1",
     "node-memecaptain-api": "git+https://github.com/whilestevego/node-memecaptain-api.git",
     "q": "^1.4.1",
     "request": "^2.67.0"
   },
   "engines": {
-    "node": "^5.10.0"
+    "node": "^6.2.1"
   }
 }

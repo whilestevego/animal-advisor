@@ -1,11 +1,13 @@
 "use strict";
 
-const _             = require("lodash");
-const App           = require("app");
-const BrowserWindow = require("browser-window");
-const Path          = require("path");
-const Tray          = require("tray");
-const Menu          = require("menu");
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  Menu
+}          = require('electron')
+const _    = require("lodash");
+const Path = require("path");
 
 // Set Paths
 const appRoot = Path.resolve(__dirname, "../..");
@@ -18,7 +20,7 @@ global.pathTo = {
 }
 const trayIconPath = `${pathTo.images}/tray.png`;
 
-App.on("ready", function () {
+app.on("ready", function () {
   const mainWindow = new BrowserWindow({
     width: 400,
     height: 500,
@@ -27,7 +29,7 @@ App.on("ready", function () {
   });
   mainWindow.loadURL(`file://${pathTo.renderer}/main/index.html`);
 
-  const appName = _.startCase(App.getName());
+  const appName = _.startCase(app.getName());
   const applicationMenuConfig = [
     {
       label: appName,
@@ -62,7 +64,7 @@ App.on("ready", function () {
         }, {
           label: "Quit",
           accelerator: "Command+Q",
-          click: function() { App.quit(); }
+          click: function() { app.quit(); }
         }
       ]
     }, {

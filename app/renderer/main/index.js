@@ -8,14 +8,10 @@ const FS      = require("fs");
 const Path    = require("path");
 
 // Electron Modules
-const Clipboard = require("clipboard");
-const Shell     = require("shell");
-const Remote    = require("remote");
-const Menu      = Remote.require("menu");
-const MenuItem  = Remote.require("menu-item");
-const Dialog    = Remote.require("dialog");
+const {clipboard, shell, remote} = require('electron')
+const {Menu, MenuItem, dialog}   = remote
 
-const pathTo   = Remote.getGlobal("pathTo");
+const pathTo   = remote.getGlobal("pathTo");
 const AnimalAdvisor = require(`${pathTo.lib}/animal-advisor`);
 
 const searchQueryInput = document.querySelector("#search-query");
@@ -37,7 +33,7 @@ function setImage (path) {
   console.log("Setting image...");
   adviceAnimalImg.src = path;
   adviceAnimalImg.className = "";
-  Clipboard.writeImage(path);
+  clipboard.writeImage(path);
   sendNotification(path);
 }
 
@@ -81,19 +77,19 @@ adviceAnimalMenu.append(new MenuItem({
 
 adviceAnimalImg.addEventListener("contextmenu", function (event) {
   event.preventDefault();
-  adviceAnimalMenu.popup(Remote.getCurrentWindow());
+  adviceAnimalMenu.popup(remote.getCurrentWindow());
 }, false);
 
 // Copy to Clipboard
 function copyToClipboard () {
   const filePath = event.target.src.replace(/file:\/\//,"");
-  Clipboard.writeImage(filePath);
+  clipboard.writeImage(filePath);
 }
 
 // Save Image as... Dialog
 function showSaveImageAsDialog () {
   const options = { title: "Save Image as..." };
-  Dialog.showSaveDialog(Remote.getCurrentWindow(), options, handleSaveDialog);
+  dialog.showSaveDialog(remote.getCurrentWindow(), options, handleSaveDialog);
 }
 
 function handleSaveDialog (path) {
@@ -107,9 +103,9 @@ function handleSaveDialog (path) {
 function handleFileCopy (path) {
   return function (error) {
     if (error) {
-      Dialog.showErrorBox("Save Image as... failed", error)
+      dialog.showErrorBox("Save Image as... failed", error)
     } else if (path) {
-      Shell.showItemInFolder(path);
+      shell.showItemInFolder(path);
     };
   }
 };
