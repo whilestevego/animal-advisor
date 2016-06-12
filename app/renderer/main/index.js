@@ -94,11 +94,11 @@ function showSaveImageAsDialog (sourcePath) {
   dialog.showSaveDialog(
     currentWindow,
     {title: 'Save Image as...'},
-    destination => { saveImage(sourcePath, destination) }
+    destination => { saveImageAs(sourcePath, destination) }
   )
 }
 
-function saveImage (sourcePath, destinationPath) {
+function saveImageAs (sourcePath, destinationPath) {
   const ext = Path.extname(sourcePath)
   const destinationPathWithExt = `${destinationPath}${ext}`
 
