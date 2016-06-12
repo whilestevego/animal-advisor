@@ -12,10 +12,10 @@ const Path = require('path')
 // Set Paths
 const appRoot = Path.resolve(__dirname, '../..')
 const pathTo = {
-  images: Path.resolve(appRoot, 'app/assets/images'),
+  images: Path.resolve(appRoot, 'src/assets/images'),
   cache: Path.resolve(appRoot, 'cache'),
-  lib: Path.resolve(appRoot, 'lib'),
-  renderer: Path.resolve(appRoot, 'app/renderer'),
+  lib: Path.resolve(appRoot, 'src/lib'),
+  renderer: Path.resolve(appRoot, 'src/renderer'),
   root: Path.resolve(appRoot)
 }
 

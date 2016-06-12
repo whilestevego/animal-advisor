@@ -9,8 +9,8 @@ const {clipboard, shell, remote} = require('electron')
 const {Menu, dialog} = remote
 
 // Internal Modules
-const {stripResource, copyFile} = require('../../../lib/utils')
-const {generateFromSentence} = require('../../../lib/generator')
+const {stripResource, copyFile} = require('../../lib/utils')
+const {generateFromSentence} = require('../../lib/generator')
 
 const pathTo = remote.getGlobal('pathTo')
 const currentWindow = remote.getCurrentWindow()
