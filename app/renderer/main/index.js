@@ -2,16 +2,17 @@
 'use strict'
 
 // Node Modules
-const FS = require('fs')
 const Path = require('path')
 
 // Electron Modules
 const {clipboard, shell, remote} = require('electron')
 const {Menu, dialog} = remote
 
-const pathTo = remote.getGlobal('pathTo')
-const {generateFromSentence} = require(`${pathTo.lib}/animal-advisor`)
+// Internal Modules
+const {stripResource, copyFile} = require('../../../lib/utils')
+const {generateFromSentence} = require('../../../lib/generator')
 
+const pathTo = remote.getGlobal('pathTo')
 const currentWindow = remote.getCurrentWindow()
 const searchQueryInput = document.querySelector('#search-query')
 const adviceAnimalImg = document.querySelector('#advice-animal')
@@ -82,7 +83,7 @@ function createContextMenuFor (event) {
     }, {
       label: 'Copy',
       click () { copyToClipboard(stripResource(event.target.src)) },
-      accelerator: 'Command+C'
+      accelerator: 'Command+Shift+C'
     }
   ]
 
@@ -114,25 +115,4 @@ function saveImageAs (sourcePath, destinationPath) {
   const destinationPathWithExt = `${destinationPath}${ext}`
 
   copyFile(sourcePath, destinationPathWithExt).then(shell.showItemInFolder)
-}
-
-// Utility
-function copyFile (sourcePath, destinationPath) {
-  return new Promise((resolve, reject) => {
-    const readStream = FS.createReadStream(sourcePath)
-    readStream.on('error', error => { reject(error) })
-
-    const writeStream = FS.createWriteStream(destinationPath)
-    writeStream.on('error', error => { reject(error) })
-    writeStream.on(
-      'close',
-      exception => { exception ? reject(exception) : resolve(destinationPath) }
-    )
-
-    readStream.pipe(writeStream)
-  })
-}
-
-function stripResource (path) {
-  return path.replace(/^.+:\//, '')
 }
