@@ -1,1 +1,1 @@
-require("./app/main/main.js");
+require('./app/main/main.js')
