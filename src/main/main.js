@@ -15,7 +15,7 @@ const pathTo = {
   images: Path.resolve(appRoot, 'src/assets/images'),
   cache: Path.resolve(appRoot, 'cache'),
   lib: Path.resolve(appRoot, 'src/lib'),
-  renderer: Path.resolve(appRoot, 'src/renderer'),
+  renderers: Path.resolve(appRoot, 'src/renderers'),
   root: Path.resolve(appRoot)
 }
 
@@ -30,7 +30,7 @@ app.on('ready', function () {
     frame: true,
     resizable: false
   })
-  mainWindow.loadURL(`file://${pathTo.renderer}/main/index.html`)
+  mainWindow.loadURL(`file://${pathTo.renderers}/main/index.html`)
 
   const appName = _.startCase(app.getName())
   const applicationMenuConfig = [
