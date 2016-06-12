@@ -1,69 +1,72 @@
-"use strict";
+'use strict'
 
 const {
   app,
   BrowserWindow,
   Tray,
   Menu
-}          = require('electron')
-const _    = require("lodash");
-const Path = require("path");
+} = require('electron')
+const _ = require('lodash')
+const Path = require('path')
 
 // Set Paths
-const appRoot = Path.resolve(__dirname, "../..");
-global.pathTo = {
-  images:   Path.resolve(appRoot, "app/assets/images"),
-  cache:    Path.resolve(appRoot, "cache"),
-  lib:      Path.resolve(appRoot, "lib"),
-  renderer: Path.resolve(appRoot, "app/renderer"),
-  root:     Path.resolve(appRoot)
+const appRoot = Path.resolve(__dirname, '../..')
+const pathTo = {
+  images: Path.resolve(appRoot, 'app/assets/images'),
+  cache: Path.resolve(appRoot, 'cache'),
+  lib: Path.resolve(appRoot, 'lib'),
+  renderer: Path.resolve(appRoot, 'app/renderer'),
+  root: Path.resolve(appRoot)
 }
-const trayIconPath = `${pathTo.images}/tray.png`;
 
-app.on("ready", function () {
+global.pathTo = pathTo
+
+const trayIconPath = `${pathTo.images}/tray.png`
+
+app.on('ready', function () {
   const mainWindow = new BrowserWindow({
     width: 400,
     height: 500,
     frame: true,
     resizable: false
-  });
-  mainWindow.loadURL(`file://${pathTo.renderer}/main/index.html`);
+  })
+  mainWindow.loadURL(`file://${pathTo.renderer}/main/index.html`)
 
-  const appName = _.startCase(app.getName());
+  const appName = _.startCase(app.getName())
   const applicationMenuConfig = [
     {
       label: appName,
       submenu: [
         {
           label: `About ${appName}`,
-          role: "about"
+          role: 'about'
         }, {
-          type: "separator"
+          type: 'separator'
         }, {
-          label: "Services",
-          role: "services",
+          label: 'Services',
+          role: 'services',
           submenu: []
         }, {
-          label: "Toggle DevTools",
-          accelerator: "Alt+Command+I",
-          click: function() {
-            mainWindow.show();
-            mainWindow.toggleDevTools();
+          label: 'Toggle DevTools',
+          accelerator: 'Alt+Command+I',
+          click () {
+            mainWindow.show()
+            mainWindow.toggleDevTools()
           }
         }, {
-          type: "separator"
+          type: 'separator'
         }, {
           label: `Hide ${appName}`,
-          accelerator: "Command+H",
-          role: "hide"
+          accelerator: 'Command+H',
+          role: 'hide'
         }, {
-          label: "Show All",
-          role: "unhide"
+          label: 'Show All',
+          role: 'unhide'
         }, {
-          type: "separator"
+          type: 'separator'
         }, {
-          label: "Quit",
-          accelerator: "Command+Q",
+          label: 'Quit',
+          accelerator: 'Command+Q',
           click: function() { app.quit(); }
         }
       ]
@@ -87,29 +90,29 @@ app.on("ready", function () {
         }
       ]
     }
-  ];
+  ]
 
-  const applicationMenu = Menu.buildFromTemplate(applicationMenuConfig);
-  Menu.setApplicationMenu(applicationMenu);
+  const applicationMenu = Menu.buildFromTemplate(applicationMenuConfig)
+  Menu.setApplicationMenu(applicationMenu)
 
   const menuConfig = [ {
-    label: "Show All",
-    role: "unhide"
+    label: 'Show All',
+    role: 'unhide'
   }, {
-    label: "Toggle DevTools",
-    accelerator: "Alt+Command+I",
-    click: function() {
-      mainWindow.show();
-      mainWindow.toggleDevTools();
+    label: 'Toggle DevTools',
+    accelerator: 'Alt+Command+I',
+    click () {
+      mainWindow.show()
+      mainWindow.toggleDevTools()
     }
   }, {
-    label: "Quit",
-    accelerator: "Command+Q",
-    selector: "terminate:"
-  } ];
-  const contextMenu = Menu.buildFromTemplate(menuConfig);
+    label: 'Quit',
+    accelerator: 'Command+Q',
+    selector: 'terminate:'
+  } ]
+  const contextMenu = Menu.buildFromTemplate(menuConfig)
 
-  const trayIcon = new Tray(trayIconPath);
-  trayIcon.setToolTip("Animal Advisor");
-  trayIcon.setContextMenu(contextMenu);
-});
+  const trayIcon = new Tray(trayIconPath)
+  trayIcon.setToolTip('Animal Advisor')
+  trayIcon.setContextMenu(contextMenu)
+})
