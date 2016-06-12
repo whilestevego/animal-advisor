@@ -10,7 +10,7 @@ const {clipboard, shell, remote} = require('electron')
 const {Menu, dialog} = remote
 
 const pathTo = remote.getGlobal('pathTo')
-const AnimalAdvisor = require(`${pathTo.lib}/animal-advisor`)
+const {generateFromSentence} = require(`${pathTo.lib}/animal-advisor`)
 
 const currentWindow = remote.getCurrentWindow()
 const searchQueryInput = document.querySelector('#search-query')
@@ -23,20 +23,31 @@ searchQueryInput.addEventListener('input', function (event) {
 searchQueryInput.addEventListener('keydown', function (event) {
   if (event.keyCode === 13) {
     loading()
-    const advisor = AnimalAdvisor.create(pathTo.cache)
-    advisor.say(global.adviceAnimalQuestion).then(setImage).done()
+    try {
+      generateFromSentence(global.adviceAnimalQuestion, pathTo.cache)
+        .then(setImage)
+        .catch(error => {
+          console.error(error)
+          resetLogo()
+        })
+    // TODO: unify error promise style
+    } catch (error) {
+      // Like, meme not found
+      // TODO: notify user
+      console.warn(error)
+      resetLogo()
+    }
   }
 })
 
 function setImage (path) {
-  console.log('Setting image...')
   adviceAnimalImg.src = path
   adviceAnimalImg.className = ''
   clipboard.writeImage(path)
   sendNotification(path)
 }
 
-function resetAdviceAnimal () {
+function resetLogo () {
   adviceAnimalImg.src = `${pathTo.images}/doge-icon-512.png`
   adviceAnimalImg.className = 'placeholder'
 }
@@ -61,7 +72,7 @@ function createContextMenuFor (event) {
   const contextMenuTemplate = [
     {
       label: 'Reset',
-      click: resetAdviceAnimal
+      click: resetLogo
     }, {
       label: 'Save Image as...',
       click () { showSaveImageAsDialog(stripResource(event.target.src)) },
