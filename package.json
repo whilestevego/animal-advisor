@@ -38,7 +38,6 @@
     "jimp": "^0.2.24",
     "lodash": "^4.13.1",
     "node-memecaptain-api": "git+https://github.com/whilestevego/node-memecaptain-api.git",
-    "q": "^1.4.1",
     "request": "^2.67.0"
   },
   "engines": {
