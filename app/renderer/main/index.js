@@ -102,42 +102,26 @@ function saveImage (sourcePath, destinationPath) {
   const ext = Path.extname(sourcePath)
   const destinationPathWithExt = `${destinationPath}${ext}`
 
-  copyFile(sourcePath,
-           destinationPathWithExt,
-           handleFileCopy(destinationPathWithExt))
-}
-
-function handleFileCopy (path) {
-  return function (error) {
-    if (error) {
-      dialog.showErrorBox('Save Image as... failed', error)
-    } else if (path) {
-      shell.showItemInFolder(path)
-    }
-  }
-}
-
-function copyFile (source, target, callback) {
-  let callbackCalled = false
-
-  const readStream = FS.createReadStream(source)
-  readStream.on('error', function (error) { done(error) })
-
-  const writeStream = FS.createWriteStream(target)
-  writeStream.on('error', function (error) { done(error) })
-  writeStream.on('close', function (ex) { done() })
-
-  readStream.pipe(writeStream)
-
-  function done (error) {
-    if (!callbackCalled && callback) {
-      callback(error)
-      callbackCalled = true
-    }
-  }
+  copyFile(sourcePath, destinationPathWithExt).then(shell.showItemInFolder)
 }
 
 // Utility
+function copyFile (sourcePath, destinationPath) {
+  return new Promise((resolve, reject) => {
+    const readStream = FS.createReadStream(sourcePath)
+    readStream.on('error', error => { reject(error) })
+
+    const writeStream = FS.createWriteStream(destinationPath)
+    writeStream.on('error', error => { reject(error) })
+    writeStream.on(
+      'close',
+      exception => { exception ? reject(exception) : resolve(destinationPath) }
+    )
+
+    readStream.pipe(writeStream)
+  })
+}
+
 function stripResource (path) {
   return path.replace(/^.+:\//, '')
 }
