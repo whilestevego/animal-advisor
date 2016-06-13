@@ -24,6 +24,8 @@ const pathTo = {
   root: Path.resolve(appRoot)
 }
 
+const client = require('electron-connect').client
+
 global.pathTo = pathTo
 
 const trayIconPath = `${pathTo.images}/tray.png`
@@ -36,6 +38,9 @@ app.on('ready', function () {
     resizable: false
   })
   mainWindow.loadURL(`file://${pathTo.renderer}/index.html`)
+
+  // [electron-connect] Connect to server process
+  client.create(mainWindow)
 
   createApplicationMenuFor(app, mainWindow)
 
