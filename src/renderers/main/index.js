@@ -6,11 +6,12 @@ const Path = require('path')
 
 // Electron Modules
 const {clipboard, shell, remote} = require('electron')
-const {Menu, dialog} = remote
+const {dialog} = remote
 
 // Internal Modules
 const {stripResource, copyFile} = require('../../lib/utils')
 const {generateFromSentence} = require('../../lib/generator')
+const AnimalAdviceImageMenu = require('../../menus/animal-advice-image')
 
 const pathTo = remote.getGlobal('pathTo')
 const currentWindow = remote.getCurrentWindow()
@@ -67,39 +68,19 @@ function sendNotification (path) {
   return new Notification(title, options)
 }
 
-// Context Menu
-
-function createContextMenuFor (event) {
-  const contextMenuTemplate = [
-    {
-      label: 'Reset',
-      click: resetLogo
-    }, {
-      label: 'Save Image as...',
-      click () { showSaveImageAsDialog(stripResource(event.target.src)) },
-      accelerator: 'Command+Shift+S'
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Copy',
-      click () { copyToClipboard(stripResource(event.target.src)) },
-      accelerator: 'Command+Shift+C'
-    }
-  ]
-
-  const adviceAnimalMenu = Menu.buildFromTemplate(contextMenuTemplate)
-  adviceAnimalMenu.popup(currentWindow)
-}
-
 adviceAnimalImg.addEventListener('contextmenu', function (event) {
   event.preventDefault()
-  createContextMenuFor(event)
-}, false)
 
-// Copy to Clipboard
-function copyToClipboard (imagePath) {
-  clipboard.writeImage(imagePath)
-}
+  AnimalAdviceImageMenu.on('reset', resetLogo)
+  AnimalAdviceImageMenu.on('save-image-as', () => {
+    showSaveImageAsDialog(stripResource(event.target.src))
+  })
+  AnimalAdviceImageMenu.on('copy', () => {
+    clipboard.writeImage(stripResource(event.target.src))
+  })
+
+  AnimalAdviceImageMenu.menu.popup(currentWindow)
+}, false)
 
 // Save Image as... Dialog
 function showSaveImageAsDialog (sourcePath) {
