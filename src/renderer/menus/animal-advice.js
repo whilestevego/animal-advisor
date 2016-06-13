@@ -1,4 +1,4 @@
-const EventedMenu = require('./evented-menu')
+const EventedMenu = require('../../lib/evented-menu')
 
 const template = [
   {

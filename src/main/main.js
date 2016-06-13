@@ -11,8 +11,8 @@ const {
 const Path = require('path')
 
 // Internal Modules
-const {createApplicationMenuFor} = require('../menus/application.js')
-const {createTrayMenu} = require('../menus/tray.js')
+const {createApplicationMenuFor} = require('./menus/application.js')
+const {createTrayMenu} = require('./menus/tray.js')
 
 // Set Paths
 const appRoot = Path.resolve(__dirname, '../..')
@@ -20,7 +20,7 @@ const pathTo = {
   images: Path.resolve(appRoot, 'src/assets/images'),
   cache: Path.resolve(appRoot, 'cache'),
   lib: Path.resolve(appRoot, 'src/lib'),
-  renderers: Path.resolve(appRoot, 'src/renderers'),
+  renderer: Path.resolve(appRoot, 'src/renderer'),
   root: Path.resolve(appRoot)
 }
 
@@ -35,7 +35,7 @@ app.on('ready', function () {
     frame: true,
     resizable: false
   })
-  mainWindow.loadURL(`file://${pathTo.renderers}/main/index.html`)
+  mainWindow.loadURL(`file://${pathTo.renderer}/index.html`)
 
   createApplicationMenuFor(app, mainWindow)
 

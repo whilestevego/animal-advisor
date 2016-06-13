@@ -9,9 +9,9 @@ const {clipboard, shell, remote} = require('electron')
 const {dialog} = remote
 
 // Internal Modules
-const {stripResource, copyFile} = require('../../lib/utils')
-const {generateFromSentence} = require('../../lib/generator')
-const AnimalAdviceImageMenu = require('../../menus/animal-advice-image')
+const {stripResource, copyFile} = require('../lib/utils')
+const {generateFromSentence} = require('../lib/generator')
+const AnimalAdviceMenu = require('./menus/animal-advice.js')
 
 const pathTo = remote.getGlobal('pathTo')
 const currentWindow = remote.getCurrentWindow()
@@ -71,15 +71,16 @@ function sendNotification (path) {
 adviceAnimalImg.addEventListener('contextmenu', function (event) {
   event.preventDefault()
 
-  AnimalAdviceImageMenu.on('reset', resetLogo)
-  AnimalAdviceImageMenu.on('save-image-as', () => {
+  AnimalAdviceMenu.on('reset', resetLogo)
+  AnimalAdviceMenu.on('save-image-as', () => {
     showSaveImageAsDialog(stripResource(event.target.src))
   })
-  AnimalAdviceImageMenu.on('copy', () => {
+  AnimalAdviceMenu.on('copy', () => {
     clipboard.writeImage(stripResource(event.target.src))
   })
 
-  AnimalAdviceImageMenu.menu.popup(currentWindow)
+  // TODO: Delegate popup to menu in EventedMenu
+  AnimalAdviceMenu.menu.popup(currentWindow)
 }, false)
 
 // Save Image as... Dialog
