@@ -31,7 +31,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
-app.on('ready', function () {
+app.on('ready', () => {
   let mainWindow = new BrowserWindow({
     width: 400,
     height: 500,

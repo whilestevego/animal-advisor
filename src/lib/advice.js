@@ -23,7 +23,7 @@ export default class Advice {
       throw new Error('Meme could not be found')
     }
 
-    return new Advice(_.merge({sentence}, advice))
+    return new Advice({sentence, ...advice})
   }
 
   get matches () {
