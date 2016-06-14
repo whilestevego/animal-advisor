@@ -15,12 +15,12 @@ const {createApplicationMenuFor} = require('./menus/application.js')
 const {createTrayMenu} = require('./menus/tray.js')
 
 // Set Paths
-const appRoot = Path.resolve(__dirname, '../..')
+const appRoot = Path.resolve(__dirname, '../')
 const pathTo = {
-  images: Path.resolve(appRoot, 'src/assets/images'),
-  cache: Path.resolve(appRoot, 'cache'),
-  lib: Path.resolve(appRoot, 'src/lib'),
-  renderer: Path.resolve(appRoot, 'src/renderer'),
+  images: Path.resolve(appRoot, 'assets/images'),
+  cache: Path.resolve(appRoot, '../cache'),
+  lib: Path.resolve(appRoot, 'lib'),
+  renderer: Path.resolve(appRoot, 'renderer'),
   root: Path.resolve(appRoot)
 }
 
@@ -31,13 +31,14 @@ global.pathTo = pathTo
 const trayIconPath = `${pathTo.images}/tray.png`
 
 app.on('ready', function () {
-  const mainWindow = new BrowserWindow({
+  let mainWindow = new BrowserWindow({
     width: 400,
     height: 500,
     frame: true,
     resizable: false
   })
   mainWindow.loadURL(`file://${pathTo.renderer}/index.html`)
+  mainWindow.on('closed', () => { mainWindow = null })
 
   // [electron-connect] Connect to server process
   client.create(mainWindow)

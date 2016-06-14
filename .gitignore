@@ -1,5 +1,6 @@
 cache
 dist
+.tmp
 
 # Created by https://www.gitignore.io/api/osx,linux,node,javascript
 
