@@ -30,6 +30,10 @@ global.pathTo = pathTo
 
 const trayIconPath = `${pathTo.images}/tray.png`
 
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
+})
+
 app.on('ready', function () {
   let mainWindow = new BrowserWindow({
     width: 400,
@@ -38,7 +42,6 @@ app.on('ready', function () {
     resizable: false
   })
   mainWindow.loadURL(`file://${pathTo.renderer}/index.html`)
-  mainWindow.on('closed', () => { mainWindow = null })
 
   // [electron-connect] Connect to server process
   client.create(mainWindow)
