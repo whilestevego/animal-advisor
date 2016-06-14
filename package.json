@@ -27,6 +27,8 @@
   "homepage": "https://github.com/whilestevego/animal-advisor#readme",
   "devDependencies": {
     "babel-core": "^6.9.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "del": "^2.0.0",
     "devtron": "^1.2.0",
