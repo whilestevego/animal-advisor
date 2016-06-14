@@ -1,20 +1,19 @@
 /*global Notification */
-'use strict'
-
 // Node Modules
-const Path = require('path')
+import Path from 'path'
 
 // Electron Modules
-const {clipboard, shell, remote} = require('electron')
-const {dialog} = remote
+import {clipboard, shell, remote} from 'electron'
 
 // Internal Modules
-const {stripResource, copyFile} = require('../lib/utils')
-const {generateFromSentence} = require('../lib/generator')
-const AnimalAdviceMenu = require('./menus/animal-advice.js')
+import {stripResource, copyFile} from '../lib/utils'
+import {generateFromSentence} from '../lib/generator'
+import AnimalAdviceMenu from './menus/animal-advice.js'
 
+const {dialog} = remote
 const pathTo = remote.getGlobal('pathTo')
 const currentWindow = remote.getCurrentWindow()
+
 const searchQueryInput = document.querySelector('#search-query')
 const adviceAnimalImg = document.querySelector('#advice-animal')
 

@@ -1,18 +1,15 @@
-'use strict'
+// General Modules
+import {client} from 'electron-connect'
 
 // Electron Modules
-const {
-  app,
-  BrowserWindow,
-  Tray
-} = require('electron')
+import {app, BrowserWindow, Tray} from 'electron'
 
 // Node Modules
-const Path = require('path')
+import Path from 'path'
 
 // Internal Modules
-const {createApplicationMenuFor} = require('./menus/application.js')
-const {createTrayMenu} = require('./menus/tray.js')
+import {createApplicationMenuFor} from './menus/application.js'
+import {createTrayMenu} from './menus/tray.js'
 
 // Set Paths
 const appRoot = Path.resolve(__dirname, '../')
@@ -24,8 +21,8 @@ const pathTo = {
   root: Path.resolve(appRoot)
 }
 
-const client = require('electron-connect').client
-
+// Adding pathTo to global object to make it available
+// to renderer
 global.pathTo = pathTo
 
 const trayIconPath = `${pathTo.images}/tray.png`

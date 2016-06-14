@@ -1,11 +1,9 @@
-'use strict'
+import Captain from 'node-memecaptain-api'
+import jimp from 'jimp'
+import Advice from './advice'
+import {savePathFromResponse, timeout, delay} from './utils'
 
-const Captain = require('node-memecaptain-api')
-const jimp = require('jimp')
-const Advice = require('./advice')
-const {savePathFromResponse, timeout, delay} = require('./utils')
-
-function generateFromSentence (sentence, destinationDir) {
+export function generateFromSentence (sentence, destinationDir) {
   return generate(
     Advice.find(sentence).toMemeCaptainParams(),
     destinationDir
@@ -59,5 +57,3 @@ function downloadImage (destinationDir) {
     })
   }
 }
-
-module.exports.generateFromSentence = generateFromSentence

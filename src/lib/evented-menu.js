@@ -1,7 +1,9 @@
-const {Menu} = require('electron').remote
-const _ = require('lodash')
+import {remote} from 'electron'
+import _ from 'lodash'
 
-class EventedMenu {
+const {Menu} = remote
+
+export default class EventedMenu {
   constructor (template) {
     this._events = {}
     this.template = template
@@ -36,5 +38,3 @@ class EventedMenu {
     this._events[eventName] = callback
   }
 }
-
-module.exports = EventedMenu

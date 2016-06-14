@@ -1,6 +1,6 @@
-const { Menu } = require('electron')
+import {Menu} from 'electron'
 
-function createTrayMenu (win) {
+export function createTrayMenu (win) {
   const template = [
     {
       label: 'Show All',
@@ -21,5 +21,3 @@ function createTrayMenu (win) {
 
   return Menu.buildFromTemplate(template)
 }
-
-module.exports = {createTrayMenu}

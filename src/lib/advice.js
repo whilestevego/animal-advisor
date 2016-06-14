@@ -1,8 +1,6 @@
-'use strict'
+import _ from 'lodash'
 
-const _ = require('lodash')
-
-class Advice {
+export default class Advice {
   constructor (options) {
     _.merge(this, options)
 
@@ -189,5 +187,3 @@ const definitionList = [
     caption (matches) { return {top: '', bottom: matches[1]} }
   }
 ]
-
-module.exports = Advice

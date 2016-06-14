@@ -1,6 +1,6 @@
-const fs = require('fs')
+import fs from 'fs'
 
-function copyFile (sourcePath, destinationPath) {
+export function copyFile (sourcePath, destinationPath) {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(sourcePath)
     readStream.on('error', error => { reject(error) })
@@ -16,17 +16,17 @@ function copyFile (sourcePath, destinationPath) {
   })
 }
 
-function stripResource (path) {
+export function stripResource (path) {
   return path.replace(/^.+:\//, '')
 }
 
-function savePathFromResponse (response, destinationDir) {
+export function savePathFromResponse (response, destinationDir) {
   const extension = /image\/(\w+)\b/.exec(response.headers['content-type'])[1]
   const filename = response.headers['meme-text'].replace(/[^A-Za-z+]/g, '').replace(/\+/g, '-')
   return `${destinationDir}/${filename}.${extension}`
 }
 
-function timeout (promise, milliseconds) {
+export function timeout (promise, milliseconds) {
   return new Promise((resolve, reject) => {
     promise.then(resolve)
 
@@ -37,18 +37,10 @@ function timeout (promise, milliseconds) {
   })
 }
 
-function delay (milliseconds) {
+export function delay (milliseconds) {
   return value => {
     return new Promise(resolve => {
       setTimeout(() => { resolve(value) }, milliseconds)
     })
   }
-}
-
-module.exports = {
-  copyFile,
-  stripResource,
-  savePathFromResponse,
-  timeout,
-  delay
 }

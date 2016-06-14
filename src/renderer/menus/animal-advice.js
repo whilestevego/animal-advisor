@@ -1,4 +1,4 @@
-const EventedMenu = require('../../lib/evented-menu')
+import EventedMenu from '../../lib/evented-menu'
 
 const template = [
   {
@@ -14,4 +14,4 @@ const template = [
   }
 ]
 
-module.exports = new EventedMenu(template)
+export default new EventedMenu(template)

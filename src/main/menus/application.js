@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const { Menu } = require('electron')
+import _ from 'lodash'
+import {Menu} from 'electron'
 
-function createApplicationMenuFor (app, win) {
+export function createApplicationMenuFor (app, win) {
   const appName = _.startCase(app.getName())
 
   const template = [
@@ -66,5 +66,3 @@ function createApplicationMenuFor (app, win) {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
   return Menu
 }
-
-module.exports = {createApplicationMenuFor}
