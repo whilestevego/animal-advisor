@@ -4,7 +4,8 @@
   "description": "A desktop application for generating Advice Animals.",
   "main": ".tmp/main/main.js",
   "scripts": {
-    "start": "gulp serve",
+    "start": "gulp build && gulp serve",
+    "build": "gulp build",
     "package": "electron-packager . \"Advisor\" --platform=darwin --arch=x64 --out=dist/ --version 0.37.6 --overwrite --icon=./src/assets/images/icon.icns",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
