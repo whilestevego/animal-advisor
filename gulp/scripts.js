@@ -6,7 +6,7 @@ const changed = require('gulp-changed')
 const sourcemaps = require('gulp-sourcemaps')
 const notify = require('gulp-notify')
 
-const sources = ['src/**/*.js']
+const sources = ['src/**/*.{js,jsx}']
 const destination = '.tmp'
 
 gulp.task('scripts', () => {
