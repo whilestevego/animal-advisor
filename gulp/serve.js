@@ -6,7 +6,6 @@ const electronServer = require('electron-connect').server
 gulp.task('serve',
   [
     'copy:watch',
-    'eslint:watch',
     'scripts:watch',
     'styles:watch'
   ],
