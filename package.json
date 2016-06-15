@@ -28,6 +28,7 @@
   "homepage": "https://github.com/whilestevego/animal-advisor#readme",
   "devDependencies": {
     "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
     "babel-plugin-transform-strict-mode": "^6.8.0",
     "babel-preset-react": "^6.5.0",
