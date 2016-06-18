@@ -34,6 +34,11 @@ export default class EventedMenu {
     return this._menu
   }
 
+  // Delegate `popup` to built menu
+  popup (window) {
+    return this.menu.popup(window)
+  }
+
   on (eventName, callback) {
     this._events[eventName] = callback
   }

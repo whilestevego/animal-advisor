@@ -18,7 +18,7 @@ export default function Advice ({imagePath}) {
 
   const handleContextMenu = () => {
     // TODO: Delegate `popup` to menu
-    AnimalAdviceMenu.menu.popup(currentWindow)
+    AnimalAdviceMenu.popup(currentWindow)
   }
 
   return (
