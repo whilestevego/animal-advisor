@@ -18,12 +18,15 @@ export default class Ask extends Component {
   render () {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          question={this.state.question}
-          onChange={this.linkState}
-          placeholder="Consult Advisor"
-        />
+        <div className='form-group'>
+          <input
+            className='form-control'
+            type='text'
+            question={this.state.question}
+            onChange={this.linkState}
+            placeholder='Consult Advisor'
+          />
+        </div>
       </form>
     )
   }
