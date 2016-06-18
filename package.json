@@ -57,6 +57,7 @@
     "run-sequence": "^1.1.2"
   },
   "dependencies": {
+    "fuzzysearch": "^1.0.3",
     "jimp": "^0.2.24",
     "lodash": "^4.13.1",
     "node-memecaptain-api": "git+https://github.com/whilestevego/node-memecaptain-api.git",

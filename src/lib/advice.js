@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import adviceList from './advice-list'
+import fuzzysearch from 'fuzzysearch'
 
 export default class Advice {
   constructor (options) {
@@ -27,6 +28,16 @@ export default class Advice {
     }
 
     return new Advice({sentence, ...advice})
+  }
+
+  static search (sentence = '') {
+    sentence = sentence.trim()
+    return _.filter(
+      // TODO: Maybe, adviceList should be a constructor parameter.
+      // It will make this easier to test.
+      adviceList,
+      advice => fuzzysearch(sentence, advice.pattern.toString())
+    )
   }
 
   get matches () {
