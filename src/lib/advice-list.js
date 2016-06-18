@@ -4,7 +4,7 @@ export default [
   {
     // Match custom 'x|y|z' advice first or it may matched by another pattern.
     pattern: /^(?:(https?:\/\/[^|\s]+\.(?:jpe?g|gif|png)[^|\s]*)|([^|]+))\s*\|\s*([^|]*)\s*\|\s*([^|]*)/i,
-    help: '<b>{image url or search}</b> | <b>{top text}</b> | <b>{bottom text}</b>',
+    help: '{image url or search} | {top text} | {bottom text}',
     run (callback) {
       if (this.topText) {
         return callback(matches[1], this.$3, this.$4)
@@ -23,89 +23,110 @@ export default [
   },
   */
   {
+    name: '"Y U NO" Guy',
     pattern: /^(y u no) (.*)/i,
-    help: 'y u no <b>{text}</b>',
+    help: 'y u no {text}',
     url: 'NryNmg'
   }, {
+    name: 'Ancient Aliens',
     pattern: /^aliens? guy (.+)/i,
-    help: 'aliens guy <b>{text}</b>',
+    help: 'aliens guy {text}',
     url: 'sO-Hng',
     caption (matches) { return {top: '', bottom: matches[1]} }
   }, {
+    name: 'Imminent Ned',
     pattern: /^((?:prepare|brace) (?:yourself|yourselves)) (.+)/i,
-    help: 'brace yourself <b>{text}</b>',
+    help: 'brace yourself {text}',
     url: '_I74XA'
   }, {
+    name: 'X all the Y',
     pattern: /^(.*) (all the .*)/i,
-    help: '<b>{text}</b> all the <b>{things}</b>',
+    help: '{text} all the {things}',
     url: 'Dv99KQ'
   }, {
+    name: 'The Most Interesting Man in the World',
     pattern: /^(i don'?t (?:always|normally) .*) (but when i do,? .*)/i,
-    help: 'I don\'t always <b>{something}</b> but when I do <b>{text}</b>',
+    help: 'I don\'t always {something} but when I do {text}',
     url: 'V8QnRQ'
   }, {
+    name: 'The Rent is Too Damn High / Jimmy MacMillan',
     pattern: /^(.*) (\w+\stoo damn .*)/i,
-    help: '<b>{text}</b> too damn <b>{something}</b>',
+    help: '{text} too damn {something}',
     url: 'RCkv6Q'
   }, {
+    name: 'Futurama Fry / Not Sure If',
     pattern: /^(not sure if .*) (or .*)/i,
-    help: 'not sure if <b>{something}</b> or <b>{something else}</b>',
+    help: 'not sure if {something} or {something else}',
     url: 'CsNF8w'
   }, {
+    name: 'Xzibit Yo Dawg',
     pattern: /^(yo dawg,? .*) (so .*)/i,
-    help: 'yo dawg <b>{text}</b> so <b>{text}</b>',
+    help: 'yo dawg {text} so {text}',
     url: 'Yqk_kg'
   }, {
+    name: 'All your Base Are Belong to Us',
     pattern: /^(all your .*) (are belong to .*)/i,
-    help: 'all your <b>{text}</b> are belong to <b>{text}</b>',
+    help: 'all your {text} are belong to {text}',
     url: '76CAvA'
   }, {
+    name: 'One Does Not Simply Walk into Mordor',
     pattern: /^(one does not simply) (.*)/i,
-    help: 'one does not simply <b>{text}</b>',
+    help: 'one does not simply {text}',
     url: 'da2i4A'
   }, {
+    name: 'Super Cool Ski Instructor',
     pattern: /^(if you .*\s)(.* gonna have a bad time)/i,
-    help: 'if you <b>{text}</b> gonna have a bad time',
+    help: 'if you {text} gonna have a bad time',
     url: 'lfSVJw'
   }, {
+    name: 'Philosoraptor',
     pattern: /^(if .*), ((?:are|can|do|does|how|is|may|might|should|then|what|when|where|which|who|why|will|won't|would) .*)/i,
-    help: 'if <b>{text}</b>, <b>{word that can start a question}</b> <b>{text}</b>?',
+    help: 'if {text}, {word that can start a question} {text}?',
     url: '-kFVmQ'
   }, {
+    name: 'Annoyed Picard',
     pattern: /^((?:how|what|when|where|who|why) the (?:hell|heck|fuck|shit|crap|damn)) (.*)/i,
-    help: '<b>{word that can start a question}</b> the <b>{expletive}</b> <b>{text}</b>',
+    help: '{word that can start a question} the {expletive} {text}',
     url: 'z8IPtw'
   }, {
+    name: 'Success Kid / I Hate Sandcastles',
     pattern: /^(?:success|nailed it) when (.*) then (.*)/i,
-    help: 'success when <b>{text}</b> then <b>{text}</b>',
+    help: 'success when {text} then {text}',
     url: 'AbNPRQ'
   }, {
+    name: 'First World Problems',
     pattern: /^(?:fwp|cry) when (.*) then (.*)/i,
-    help: 'cry when <b>{text}</b> then <b>{text}</b>',
+    help: 'cry when {text} then {text}',
     url: 'QZZvlg'
   }, {
+    name: 'Bad Luck Brian',
     pattern: /^bad luck when (.*) then (.*)/i,
-    help: 'bad luck when <b>{text}</b> then <b>{text}</b>',
+    help: 'bad luck when {text} then {text}',
     url: 'zl3tgg'
   }, {
+    name: 'Scumbag Steve',
     pattern: /^scumbag(?: steve)? (.*) then (.*)/i,
-    help: 'scumbag <b>{text}</b> then <b>{text}</b>',
+    help: 'scumbag {text} then {text}',
     url: 'RieD4g'
   }, {
+    name: 'Matrix Morpheus',
     pattern: /^(what if i told you) (.+)/i,
-    help: 'what if I told you <b>{text}</b>',
+    help: 'what if I told you {text}',
     url: 'fWle1w'
   }, {
-    pattern: /^(i hate) (.+)/i,
-    help: 'I hate <b>{text}</b>',
+    name: 'Grumpy Cat',
+    pattern: /^grumpy cat (.*) then (.*)/i,
+    help: 'I hate {text}',
     url: '_k6JVg'
   }, {
+    name: 'Limes Guy / Why Can\'t I Hold All These Limes?',
     pattern: /^(why can'?t (?:i|we|you|he|she|it|they)) (.+)/i,
-    help: 'why can\'t <b>{personal pronoun}</b> <b>{text}</b>',
+    help: 'why can\'t {personal pronoun} {text}',
     url: 'gdNXmQ'
   }, {
+    name: 'So I Got That Goin\' For Me, Which is Nice',
     pattern: /^(.+),? (so i(?:(?:(?:'?ve)? got)|(?: have)) that going for me(?:,? which is nice)?)/i,
-    help: '<b>{text}</b> so I got that going for me',
+    help: '{text} so I got that going for me',
     url: 'h9ct5g',
     caption (matches) {
       let bottomText = matches[2]
@@ -115,20 +136,24 @@ export default [
       return {top: matches[1], bottom: bottomText}
     }
   }, {
+    name: 'Fucking Magnets, How Do They Work?',
     pattern: /^(.+),? (how (?:do (?:they|I)|does (?:he|she|it)) work\??)/i,
-    help: '<b>{things}</b>, how do they work?',
+    help: '{things}, how do they work?',
     url: '3V6rYA'
   }, {
+    name: 'KHAN!',
     pattern: /^(.+?(?:a{3,}|e{3,}|i{3,}|o{3,}|u{3,}|y{3,}).*)/i,
-    help: '{text}<b>{3 x a|e|i|o|u|y}</b>{text}',
+    help: '{text}{3 x a|e|i|o|u|y}{text}',
     url: 'L50mqA'
   }, {
+    name: 'Do You Want Ants?',
     pattern: /^(do you want .*) (because that'?s how .*)/i,
-    help: 'do you want <b>{text}</b> because that\'?s how <b>{text}</b>',
+    help: 'do you want {text} because that\'?s how {text}',
     url: 'bxgxOg'
   }, {
+    name: 'I Should Buy a Boat Cat',
     pattern: /^(i should .*)/i,
-    help: 'i should <b>{text}</b>',
+    help: 'i should {text}',
     url: 'LPTw8A',
     caption (matches) { return {top: '', bottom: matches[1]} }
   }
