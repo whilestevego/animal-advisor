@@ -1,16 +1,14 @@
 /*global Notification */
-// Electron Components
-import {clipboard} from 'electron'
+// Electron Modules
+import {clipboard, remote} from 'electron'
+
 // React and Components
 import React, {Component} from 'react'
-import Ask from './ask'
+import Prompt from './prompt'
 import ImageMacro from './image-macro'
 import Advice from '../../lib/advice'
 
-// Electron
-import {remote} from 'electron'
 const pathTo = remote.getGlobal('pathTo')
-
 
 export default class Consultation extends Component {
   constructor (props) {
@@ -47,7 +45,7 @@ export default class Consultation extends Component {
     return (
       <section className="consultation">
         <div>{this.errorMsg}</div>
-        <Ask onSubmit={this.getImageMacro}/>
+        <Prompt onSubmit={this.getImageMacro}/>
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />
