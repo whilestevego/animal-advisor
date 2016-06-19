@@ -1,16 +1,8 @@
 import Captain from 'node-memecaptain-api'
 import jimp from 'jimp'
-import Advice from './advice'
 import {savePathFromResponse, timeout, delay} from './utils'
 
-export function generateFromSentence (sentence, destinationDir) {
-  return generate(
-    Advice.find(sentence).toMemeCaptainParams(),
-    destinationDir
-  )
-}
-
-function generate (memeCaptainParams, destinationDir) {
+export function generate (memeCaptainParams, destinationDir) {
   return new Promise((resolve, reject) => {
     timeout(Promise.resolve(Captain.createMeme(...memeCaptainParams)), 20000)
       .then(delay(200))
@@ -26,7 +18,7 @@ function downloadImage (destinationDir) {
       jimp.read(sourceUrl).then(image => {
         resolve(image)
       }).catch(error => {
-        console.error(error)
+        console.warn(error)
 
         resolve(Promise.resolve(sourceUrl).then(delay(200)).then(verify))
       })
@@ -39,7 +31,7 @@ function downloadImage (destinationDir) {
         image.write(destination, (error, image) => {
           if (error) reject(new Error(error))
 
-          console.log('Image saved!')
+          console.info('Image saved!')
           resolve(image)
         })
       })

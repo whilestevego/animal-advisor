@@ -3,15 +3,14 @@
 import {clipboard} from 'electron'
 // React and Components
 import React, {Component} from 'react'
-import Ask from './ask.js'
-import Advice from './advice.js'
-
-// Internal Libraries
-import {generateFromSentence} from '../../lib/generator.js'
+import Ask from './ask'
+import ImageMacro from './image-macro'
+import Advice from '../../lib/advice'
 
 // Electron
 import {remote} from 'electron'
 const pathTo = remote.getGlobal('pathTo')
+
 
 export default class Consultation extends Component {
   constructor (props) {
@@ -25,22 +24,19 @@ export default class Consultation extends Component {
     }
   }
 
-  getAdvice = (question) => {
+  getImageMacro = (sentence) => {
     this.setState({isLoading: true, error: null, imagePath: ''})
-    try {
-      generateFromSentence(question, pathTo.cache)
-        .then(path => {
-          this.setState({imagePath: path, isLoading: false})
-          clipboard.writeImage(path)
-          sendNotification(path)
-        })
-        .catch(error => {
-          this.setState({error, isLoading: false})
-        })
-    // TODO: unify error promise style
-    } catch (error) {
-      this.setState({error, isLoading: false})
-    }
+
+    Advice.find(sentence)
+      .then(advice => advice.generate(pathTo.cache))
+      .then(imagePath => {
+        this.setState({imagePath, isLoading: false})
+        clipboard.writeImage(imagePath)
+        sendNotification(imagePath)
+      })
+      .catch(error => {
+        this.setState({error, isLoading: false})
+      })
   }
 
   get errorMsg () {
@@ -51,8 +47,8 @@ export default class Consultation extends Component {
     return (
       <section className="consultation">
         <div>{this.errorMsg}</div>
-        <Ask onSubmit={this.getAdvice}/>
-        <Advice
+        <Ask onSubmit={this.getImageMacro}/>
+        <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />
       </section>

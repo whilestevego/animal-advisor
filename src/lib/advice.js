@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import adviceList from './advice-list'
 import fuzzysearch from 'fuzzysearch'
+import {generate} from './generator'
 
 export default class Advice {
   constructor (options) {
@@ -13,7 +14,9 @@ export default class Advice {
 
   static find (sentence) {
     // TODO: Create ArgumentError class for this case
-    if (!sentence) throw new Error('Missing argument sentence')
+    if (!sentence) {
+      return Promise.reject(new Error('Missing argument sentence'))
+    }
 
     sentence = sentence.trim()
     const advice = _.find(
@@ -24,20 +27,24 @@ export default class Advice {
     )
 
     if (_.isUndefined(advice)) {
-      throw new Error('Meme could not be found')
+      return Promise.reject(new Error('Meme could not be found'))
     }
 
-    return new Advice({sentence, ...advice})
+    return Promise.resolve(new Advice({sentence, ...advice}))
   }
 
   static search (sentence = '') {
     sentence = sentence.trim()
-    return _.filter(
+    return Promise.resolve(_.filter(
       // TODO: Maybe, adviceList should be a constructor parameter.
       // It will make this easier to test.
       adviceList,
       advice => fuzzysearch(sentence, advice.pattern.toString())
-    )
+    ))
+  }
+
+  generate (destinationDir) {
+    return generate(this.toMemeCaptainParams(), destinationDir)
   }
 
   get matches () {
