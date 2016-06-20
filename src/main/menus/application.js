@@ -41,7 +41,51 @@ export function createApplicationMenuFor (app, win) {
           click () { app.quit() }
         }
       ]
-    }, {
+    },
+
+    // Edit Menu – Needed to get all OS editing goodies
+    {
+      label: 'Edit',
+      submenu: [
+        {
+          label: 'Undo',
+          accelerator: 'CmdOrCtrl+Z',
+          role: 'undo'
+        }, {
+          label: 'Redo',
+          accelerator: 'Shift+CmdOrCtrl+Z',
+          role: 'redo'
+        }, {
+          type: 'separator'
+        }, {
+          label: 'Cut',
+          accelerator: 'CmdOrCtrl+X',
+          role: 'cut'
+        }, {
+          label: 'Copy',
+          accelerator: 'CmdOrCtrl+C',
+          role: 'copy'
+        }, {
+          label: 'Paste',
+          accelerator: 'CmdOrCtrl+V',
+          role: 'paste'
+        }, {
+          label: 'Paste and Match Style',
+          accelerator: 'Shift+Command+V',
+          role: 'pasteandmatchstyle'
+        }, {
+          label: 'Delete',
+          role: 'delete'
+        }, {
+          label: 'Select All',
+          accelerator: 'CmdOrCtrl+A',
+          role: 'selectall'
+        }
+      ]
+    },
+
+    // Window Menu – OS standard window actions 
+    {
       label: 'Window',
       role: 'window',
       submenu: [
