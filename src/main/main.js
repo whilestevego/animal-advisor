@@ -27,12 +27,14 @@ global.pathTo = pathTo
 
 const trayIconPath = `${pathTo.images}/tray.png`
 
+let mainWindow
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
 app.on('ready', () => {
-  let mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 400,
     height: 500,
     frame: true,
@@ -41,10 +43,13 @@ app.on('ready', () => {
   mainWindow.loadURL(`file://${pathTo.renderer}/index.html`)
 
   // [electron-connect] Connect to server process
-  client.create(mainWindow)
+
+  if (process.env.NODE_ENV !== 'production') {
+    client.create(mainWindow)
+    mainWindow.openDevTools()
+  }
 
   createApplicationMenuFor(app, mainWindow)
-
   const trayIcon = new Tray(trayIconPath)
   trayIcon.setToolTip('Animal Advisor')
   trayIcon.setContextMenu(createTrayMenu(mainWindow))

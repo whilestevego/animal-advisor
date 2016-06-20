@@ -16,14 +16,14 @@ gulp.task(
     electron.start(null, () => {})
 
     gulp.watch([
-      '.tmp/main/**/*.js',
-      '.tmp/lib/**/*.js'
+      '.tmp/main/**/*.js'
     ], electron.restart)
 
     gulp.watch([
       '.tmp/**/*.css',
       '.tmp/renderer/**/*.html',
-      '.tmp/renderer/**/*.js'
+      '.tmp/renderer/**/*.js',
+      '.tmp/lib/**/*.js'
     ], electron.reload)
   }
 )
