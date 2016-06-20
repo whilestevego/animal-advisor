@@ -57,6 +57,7 @@
     "run-sequence": "^1.1.2"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "fuzzysearch": "^1.0.3",
     "jimp": "^0.2.24",
     "lodash": "^4.13.1",
