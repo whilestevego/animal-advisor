@@ -1,6 +1,7 @@
 import _ from 'lodash'
-import adviceList from './advice-list'
 import fuzzysearch from 'fuzzysearch'
+
+import adviceList from './advice-list'
 import {generate} from './generator'
 
 export default class Advice {
@@ -33,10 +34,9 @@ export default class Advice {
     return Promise.resolve(new Advice({sentence, ...advice}))
   }
 
-  static search (sentence = '', options = {}) {
+  static search (sentence = '', options = {limit: Infinity, allowBlank: true}) {
+    const {limit, allowBlank} = options
     sentence = sentence.trim()
-    const limit = options.limit || Infinity
-    const allowBlank = _.isBoolean(options.allowBlank) ? options.allowBlank : true
 
     if (_.isEmpty(sentence) && !allowBlank) return Promise.resolve([]);
     // TODO: Maybe, adviceList should be a constructor parameter.
