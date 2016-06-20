@@ -33,14 +33,20 @@ export default class Advice {
     return Promise.resolve(new Advice({sentence, ...advice}))
   }
 
-  static search (sentence = '') {
+  static search (sentence = '', options = {}) {
     sentence = sentence.trim()
-    return Promise.resolve(_.filter(
-      // TODO: Maybe, adviceList should be a constructor parameter.
-      // It will make this easier to test.
-      adviceList,
-      advice => fuzzysearch(sentence, advice.pattern.toString())
-    ))
+    const limit = options.limit || Infinity
+    const allowBlank = _.isBoolean(options.allowBlank) ? options.allowBlank : true
+
+    if (_.isEmpty(sentence) && !allowBlank) return Promise.resolve([]);
+    // TODO: Maybe, adviceList should be a constructor parameter.
+    // It will make this easier to test.
+    return Promise.resolve(
+      _(adviceList)
+        .filter(advice => fuzzysearch(sentence, advice.pattern.toString()))
+        .take(limit)
+        .value()
+    )
   }
 
   generate (destinationDir) {

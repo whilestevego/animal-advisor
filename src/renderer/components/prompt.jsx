@@ -1,46 +1,23 @@
 // React and Components
-import React, {PropTypes, Component} from 'react'
+import React, {PropTypes} from 'react'
 
-import _ from 'lodash'
-
-export default class Prompt extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {sentence: props.sentence}
-  }
-
-  handleSubmit = (event) => {
+export default function Prompt ({onSubmit, onChange, sentence}) {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    this.props.onSubmit(this.state.sentence)
+    onSubmit(event)
   }
 
-  linkState = (event) => {
-    const {onChange} = this.props
-
-    if (_.isFunction(onChange)) {
-      onChange(event)
-    } else {
-      this.setState({sentence: event.target.value})
-    }
-  }
-
-  componentWillReceiveProps ({sentence}) {
-    this.setState({sentence})
-  }
-
-  render () {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          className='form-control'
-          type='text'
-          value={this.state.sentence}
-          onChange={this.linkState}
-          placeholder='Consult Advisor'
-        />
-      </form>
-    )
-  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        className='form-control'
+        type='text'
+        value={sentence}
+        onChange={onChange}
+        placeholder='Consult Advisor'
+      />
+    </form>
+  )
 }
 
 Prompt.propTypes = {

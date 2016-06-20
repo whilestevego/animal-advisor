@@ -41,3 +41,23 @@ body {
   0% { transform: rotate(0deg) scale(0.5); }
   100% { transform: rotate(360deg) scale(0.5); }
 }
+
+/***********/
+/* Content */
+/***********/
+
+.autocomplete {
+  position: relative;
+
+  > ul {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 2;
+
+    list-style: none;
+    border: 1px solid $border-color;
+    border-radius: $default-border-radius;
+    margin: 6px 0 0 0;
+    padding: 0;
+  }
+}
