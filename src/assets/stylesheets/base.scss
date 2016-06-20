@@ -27,20 +27,15 @@ body {
   width: 100%;
 }
 
-/* Loading States */
-
-.loading {
-  animation: Spin 2s linear 0s infinite;
-}
-
 .placeholder {
   transform: scale(0.5);
 }
 
 @keyframes Spin {
-  0% { transform: rotate(0deg) scale(0.5); }
-  100% { transform: rotate(360deg) scale(0.5); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
+
 
 /***********/
 /* Content */
