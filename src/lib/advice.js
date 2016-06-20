@@ -43,7 +43,7 @@ export default class Advice {
     // It will make this easier to test.
     return Promise.resolve(
       _(adviceList)
-        .filter(advice => fuzzysearch(sentence, advice.pattern.toString()))
+        .filter(advice => fuzzysearch(sentence, advice.help))
         .take(limit)
         .value()
     )
