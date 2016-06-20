@@ -22,7 +22,9 @@ export default class Autocomplete extends Component {
       selectedIndex: 0,
       results: props.results
     }
+
     this.updateCompletions = this.updateCompletions.bind(this)
+    this.chooseSuggestion = this.chooseSuggestion.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
@@ -41,6 +43,27 @@ export default class Autocomplete extends Component {
 
     // Keep "bubbling" child onChange event to parent component
     if (onChange) onChange(event)
+  }
+
+  chooseSuggestion (event) {
+    const {onSubmit} = this.childProps
+
+    // While results suggestions are up, prevent *Enter* key from triggering 
+    // onSubmit
+    if (_.isEmpty(this.state.results) && onSubmit) {
+      // Keep "bubbling" to child onChange to parent if results is clear
+      onSubmit(event)
+    } else {
+      const {selectedIndex, results} = this.state
+
+      this.setState({results: [], selectedIndex: 0})
+
+      this.childProps.onChange({
+        target: {
+          value: results[selectedIndex].help
+        }
+      })
+    }
   }
 
   handleKeyDown (event) {
@@ -63,7 +86,10 @@ export default class Autocomplete extends Component {
   render () {
     const child = cloneElement(
       this.props.children,
-      {onChange: this.updateCompletions}
+      {
+        onChange: this.updateCompletions,
+        onSubmit: this.chooseSuggestion
+      }
     )
 
     return (
