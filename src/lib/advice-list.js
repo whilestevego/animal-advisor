@@ -148,7 +148,7 @@ export default [
   }, {
     name: 'Do You Want Ants?',
     pattern: /^(do you want .*) (because that'?s how .*)/i,
-    help: 'do you want {text} because that\'?s how {text}',
+    help: 'do you want {text} because that\'s how {text}',
     url: 'bxgxOg'
   }, {
     name: 'I Should Buy a Boat Cat',
