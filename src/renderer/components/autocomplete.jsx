@@ -1,8 +1,9 @@
 // React and Components
 import React, {PropTypes, Component, cloneElement} from 'react'
+import AutocompleteResults from './autocomplete-results'
 
+// Packaged Libraries
 import _ from 'lodash'
-import classnames from 'classnames'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
@@ -114,47 +115,4 @@ Autocomplete.propTypes = {
 
 Autocomplete.defaultProps = {
   results: []
-}
-
-function AutocompleteResults ({results, selectedIndex}) {
-  let style = {}
-  if (_.isEmpty(results)) { style.display = 'none' }
-
-  if (!_.isEmpty(results) &&
-      !_.inRange(selectedIndex, 0, results.length)) {
-    throw new Error('selectedIndex is out of bounds')
-  }
-
-  return (
-    <ul className='autocomplete-results list-group' style={style}>
-      {
-        results.map((result, i) => (
-          <AutocompleteResult
-            key={i}
-            isSelected={selectedIndex == i}
-            {...result} />
-          ))
-      }
-    </ul>
-  )
-}
-
-AutocompleteResults.propTypes = {
-  results: PropTypes.array.isRequired,
-  selectedIndex: PropTypes.number
-}
-
-function AutocompleteResult ({name, help, pattern, url, isSelected}) {
-  const cn = classnames({
-    'autocomplete-result': true,
-    'list-group-item': true,
-    'selected': isSelected
-  })
-
-  return (
-    <li className={cn}>
-      <div><strong>{name}</strong></div>
-      <div>{help}</div>
-    </li>
-  )
 }
