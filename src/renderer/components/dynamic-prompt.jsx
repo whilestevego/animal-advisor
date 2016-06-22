@@ -1,12 +1,18 @@
-/*global Range*/
 // React and Components
-import React, {PropTypes} from 'react'
+import React, {PropTypes, Component} from 'react'
+import EditableDiv from './editable-div'
 
+// Packaged Libraries
 import _ from 'lodash'
 
-export default function DynamicPrompt ({onSubmit, onChange, sentence}) {
+export default class DynamicPrompt extends Component {
+  constructor (props) {
+    super(props)
+  }
 
-  const submitOnEnter = event => {
+  // EVENT HANDLERS
+  submitOnEnter = event => {
+    const {onSubmit} = this.props
     const {textContent} = event.currentTarget
 
     if (event.key === 'Enter') {
@@ -15,7 +21,8 @@ export default function DynamicPrompt ({onSubmit, onChange, sentence}) {
     }
   }
 
-  const manageKeyInput = event => {
+  manageKeyInput = event => {
+    const {onChange} = this.props
     const {textContent} = event.currentTarget
 
     if (!/Arrow|Enter|Esc/.test(event.key) && onChange) {
@@ -23,74 +30,41 @@ export default function DynamicPrompt ({onSubmit, onChange, sentence}) {
     }
   }
 
-  // Highjack clipboard paste event to only allow text input
-  const whitelistText = event => {
-    event.preventDefault()
+  // SUB-RENDER
+  renderDynamicField () {
+    const {sentence} = this.props
 
-    const text = event.clipboardData.getData('text/plain')
-    document.execCommand('insertHTML', false, text)
+    if (!_.isEmpty(sentence)) {
+      return splitByDelimeters(sentence).map(
+        ({isInside, pos, value}) => (
+          <EditableDiv
+            key={pos}
+            active={isInside}
+            tabIndex={pos + 1}>
+            {value}
+          </EditableDiv>
+
+        )
+      )
+    } else {
+      return (
+        <EditableDiv
+          tabIndex={1}
+          contentEditable />
+      )
+    }
   }
 
-  // Pre-select all `contentEditable` contents when focuses
-  const selectContents = event => {
-    selectNodeContents(event.target)
-  }
-
-  // Without clearing ranges, blurred `contentEditable` fields remain
-  // inputable
-  const clearSelectionRanges = event => {
-    window.getSelection().removeAllRanges()
-  }
-
-  let dynamicField
-
-  if (!_.isEmpty(sentence)) {
-    dynamicField = splitByDelimeters(sentence).map(
-      metaText => {
-        if (metaText.isInside) {
-          return (
-            <div
-              key={metaText.pos}
-              className='editable'
-              onBlur={clearSelectionRanges}
-              onFocus={selectContents}
-              onPaste={whitelistText}
-              placeholder={metaText.value}
-              tabIndex={metaText.pos + 1}
-              contentEditable>
-            </div>
-          )
-        } else {
-          return (
-            <div
-              key={metaText.pos}>
-              {metaText.value}
-            </div>
-          )
-        }
-      }
-    )
-  } else {
-    dynamicField = (
+  render () {
+    return (
       <div
-        onBlur={clearSelectionRanges}
-        onFocus={selectContents}
-        onPaste={whitelistText}
-        tabIndex={1}
-        contentEditable>
+        className='dynamic-prompt form-control'
+        onKeyDown={this.submitOnEnter}
+        onKeyUp={this.manageKeyInput}>
+        { this.renderDynamicField() }
       </div>
     )
   }
-
-
-  return (
-    <div
-      className='dynamic-prompt form-control'
-      onKeyDown={submitOnEnter}
-      onKeyUp={manageKeyInput}>
-      { dynamicField }
-    </div>
-  )
 }
 
 DynamicPrompt.propTypes = {
@@ -128,13 +102,4 @@ function splitByDelimeters (templateText, options = {delimiters: [/{/, /}/]}) {
   if (!_.isEmpty(reg)) fields.push({pos: position, isInside: false, value: reg})
 
   return fields
-}
-
-function selectNodeContents (node) {
-  const range = new Range()
-  range.selectNodeContents(node)
-
-  const sel = window.getSelection()
-  sel.removeAllRanges()
-  sel.addRange(range)
 }
