@@ -58,11 +58,13 @@ export default class Autocomplete extends Component {
 
       this.setState({results: [], selectedIndex: 0})
 
-      this.childProps.onChange({
-        target: {
-          value: results[selectedIndex].help
-        }
-      })
+      if (this.props.onSuggestionChoice) {
+        this.props.onSuggestionChoice({
+          target: {
+            value: results[selectedIndex].help
+          }
+        })
+      }
     }
   }
 
@@ -105,6 +107,7 @@ export default class Autocomplete extends Component {
 
 Autocomplete.propTypes = {
   // Verify that children contains only one
+  onSuggestionChoice: PropTypes.func,
   children: PropTypes.element.isRequired,
   results: PropTypes.array
 }
