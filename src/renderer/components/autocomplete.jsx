@@ -23,10 +23,6 @@ export default class Autocomplete extends Component {
       selectedIndex: 0,
       results: props.results
     }
-
-    this.updateCompletions = this.updateCompletions.bind(this)
-    this.chooseSuggestion = this.chooseSuggestion.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   get childProps () {
@@ -34,7 +30,7 @@ export default class Autocomplete extends Component {
   }
 
   // Event Handlers
-  updateCompletions (event) {
+  updateCompletions = event => {
     const {onChange} = this.childProps
     const sentence = event.target.value
 
@@ -46,7 +42,7 @@ export default class Autocomplete extends Component {
     if (onChange) onChange(event)
   }
 
-  chooseSuggestion (event) {
+  chooseSuggestion = event => {
     const {onSubmit} = this.childProps
 
     // While results suggestions are up, prevent *Enter* key from triggering 
@@ -69,7 +65,7 @@ export default class Autocomplete extends Component {
     }
   }
 
-  handleKeyDown (event) {
+  handleKeyDown = event => {
     event.stopPropagation()
 
     if (_(keyMaps).keys().includes(event.key)) {
