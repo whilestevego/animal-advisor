@@ -106,8 +106,8 @@ DynamicPrompt.defaultProps = {
   sentence: ''
 }
 
-function splitByDelimeters (templateText, options = {delimiters: [/{/, /}/]}) {
-  const [open, close] = options.delimiters
+function splitByDelimeters (templateText, options = {delimiters: ['{', '}']}) {
+  const [open, close] = options.delimiters.map(del => RegExp(del))
   const fields = []
   let position = 0
   let reg = ''
