@@ -44,3 +44,30 @@ export function delay (milliseconds) {
     })
   }
 }
+
+export function splitByDelimeters (templateText, options = {delimiters: ['{', '}']}) {
+  const [open, close] = options.delimiters.map(del => RegExp(del))
+  const fields = []
+  let position = 0
+  let reg = ''
+
+  for (let i in templateText) {
+    const c = templateText[i]
+
+    if (open.test(c) && i > 0) {
+      fields.push({pos: position, isInside: false, value: reg})
+      position += 1
+      reg = ''
+    } else if (close.test(c)) {
+      fields.push({pos: position, isInside: true, value: reg})
+      position += 1
+      reg = ''
+    } else {
+      if (!open.test(c)) reg += c
+    }
+  }
+
+  if (!_.isEmpty(reg)) fields.push({pos: position, isInside: false, value: reg})
+
+  return fields
+}

@@ -5,6 +5,8 @@ import EditableDiv from './editable-div'
 // Packaged Libraries
 import _ from 'lodash'
 
+import {splitByDelimeters} from '../../lib/utils'
+
 export default class DynamicPrompt extends Component {
   constructor (props) {
     super(props)
@@ -104,31 +106,4 @@ DynamicPrompt.propTypes = {
 
 DynamicPrompt.defaultProps = {
   sentence: ''
-}
-
-function splitByDelimeters (templateText, options = {delimiters: ['{', '}']}) {
-  const [open, close] = options.delimiters.map(del => RegExp(del))
-  const fields = []
-  let position = 0
-  let reg = ''
-
-  for (let i in templateText) {
-    const c = templateText[i]
-
-    if (open.test(c) && i > 0) {
-      fields.push({pos: position, isInside: false, value: reg})
-      position += 1
-      reg = ''
-    } else if (close.test(c)) {
-      fields.push({pos: position, isInside: true, value: reg})
-      position += 1
-      reg = ''
-    } else {
-      if (!open.test(c)) reg += c
-    }
-  }
-
-  if (!_.isEmpty(reg)) fields.push({pos: position, isInside: false, value: reg})
-
-  return fields
 }
