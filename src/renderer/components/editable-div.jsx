@@ -1,16 +1,19 @@
 /*global Range*/
 // React and Components
-import React, {PropTypes} from 'react'
+import React, {PropTypes, Component} from 'react'
 
 // Packaged Library
 import classnames from 'classnames'
 
-export default function EditableDiv (props = {active: true}) {
-  const {children, active, tabIndex, ...restProps} = props
+export default class EditableDiv extends Component {
+  constructor (props) {
+    super(props)
+  }
 
   // EVENT HANDLERS
   // Highjack clipboard paste event to only allow text input
-  const whitelistText = event => {
+  // (May not be necessary)
+  whitelistText = event => {
     event.preventDefault()
 
     const text = event.clipboardData.getData('text/plain')
@@ -18,47 +21,68 @@ export default function EditableDiv (props = {active: true}) {
   }
 
   // Pre-select all `contentEditable` contents when focused
-  const selectEditableContents = event => {
+  selectEditableContents = event => {
     selectNodeContents(event.target)
   }
 
   // Without clearing ranges, blurred `contentEditable` fields remain
   // inputable
-  const clearSelectionRanges = event => {
+  clearSelectionRanges = event => {
     window.getSelection().removeAllRanges()
   }
 
-  let activeProps = {}
-  if (active) {
-    activeProps = {
-      onBlur: clearSelectionRanges,
-      onFocus: selectEditableContents,
-      onPaste: whitelistText,
-      tabIndex: tabIndex || 1,
-      contentEditable: true,
-      placeholder: children
+  componentDidMount () {
+    if (this.props.toFocus === true) {
+      this.refs.base.focus()
     }
   }
 
-  const cn = classnames({
-    'editable-div': true,
-    'active': active
-  })
+  shouldComponentUpdate () {
+    return false
+  }
 
-  return (
-    <div
-      className={cn}
-      {...activeProps}
-      {...restProps}>
-      { !active ? children : null }
-    </div>
-  )
+  render () {
+    const {children, active, tabIndex, ...restProps} = this.props
+    const {clearSelectionRanges, selectEditableContents, whitelistText} = this
+
+    let activeProps = {}
+    if (active) {
+      activeProps = {
+        onBlur: clearSelectionRanges,
+        onFocus: selectEditableContents,
+        onPaste: whitelistText,
+        tabIndex: tabIndex || 1,
+        contentEditable: true,
+        placeholder: children
+      }
+    }
+
+    const cn = classnames({
+      'editable-div': true,
+      'active': active
+    })
+
+    return (
+      <div
+        ref='base'
+        className={cn}
+        {...activeProps}
+        {...restProps}>
+        { !active ? children : null }
+      </div>
+    )
+  }
 }
 
 EditableDiv.propTypes = {
-  children: PropTypes.string,
   active: PropTypes.bool,
-  tabIndex: PropTypes.number
+  children: PropTypes.string,
+  tabIndex: PropTypes.number,
+  toFocus: PropTypes.bool
+}
+
+EditableDiv.defaultProps = {
+  active: true
 }
 
 function selectNodeContents (node) {

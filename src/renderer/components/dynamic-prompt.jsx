@@ -33,24 +33,29 @@ export default class DynamicPrompt extends Component {
   // SUB-RENDER
   renderDynamicField () {
     const {sentence} = this.props
+    let tabIndexCount = 0
 
     if (!_.isEmpty(sentence)) {
       return splitByDelimeters(sentence).map(
-        ({isInside, pos, value}) => (
-          <EditableDiv
-            key={pos}
-            active={isInside}
-            tabIndex={pos + 1}>
-            {value}
-          </EditableDiv>
+        ({isInside, pos, value}) => {
+          if (isInside) tabIndexCount += 1
 
-        )
+          return (
+            <EditableDiv
+              toFocus={tabIndexCount == 1}
+              key={pos}
+              active={isInside}
+              tabIndex={tabIndexCount}>
+              {value}
+            </EditableDiv>
+          )
+        }
       )
     } else {
       return (
         <EditableDiv
-          tabIndex={1}
-          contentEditable />
+          toFocus={true}
+          tabIndex={1} />
       )
     }
   }
