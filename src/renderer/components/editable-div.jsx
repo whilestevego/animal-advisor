@@ -78,7 +78,8 @@ EditableDiv.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.string,
   tabIndex: PropTypes.number,
-  toFocus: PropTypes.bool
+  toFocus: PropTypes.bool,
+  onExpand: PropTypes.func
 }
 
 EditableDiv.defaultProps = {

@@ -8,6 +8,15 @@ import _ from 'lodash'
 export default class DynamicPrompt extends Component {
   constructor (props) {
     super(props)
+
+    this.state = {sentence: props.sentence}
+  }
+
+  clear = () => {
+    this.setState({sentence: ''})
+    this.forceUpdate(
+      () => { this.props.onChange({target: {value: ''}})}
+    )
   }
 
   // EVENT HANDLERS
@@ -17,6 +26,7 @@ export default class DynamicPrompt extends Component {
 
     if (event.key === 'Enter') {
       event.preventDefault()
+
       if (onSubmit) onSubmit({target: {value: textContent}})
     }
   }
@@ -24,15 +34,18 @@ export default class DynamicPrompt extends Component {
   manageKeyInput = event => {
     const {onChange} = this.props
     const {textContent} = event.currentTarget
+    const {key, ctrlKey} = event
 
-    if (!/Arrow|Enter|Esc/.test(event.key) && onChange) {
+    if (/Esc/.test(key) || (ctrlKey && /c/.test(key))) {
+      this.clear()
+    } else if (!/Arrow|Enter/.test(key) && onChange) {
       onChange({target: {value: textContent}})
     }
   }
 
   // SUB-RENDER
   renderDynamicField () {
-    const {sentence} = this.props
+    const {sentence} = this.state
     let tabIndexCount = 0
 
     if (!_.isEmpty(sentence)) {
@@ -58,6 +71,17 @@ export default class DynamicPrompt extends Component {
           tabIndex={1} />
       )
     }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({sentence: nextProps.sentence})
+  }
+
+  shouldComponentUpdate (nextProps) {
+    if (nextProps.sentence === this.props.sentence) {
+      return false
+    }
+    return true
   }
 
   render () {

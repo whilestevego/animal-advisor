@@ -45,7 +45,7 @@ export default class Autocomplete extends Component {
   chooseSuggestion = event => {
     const {onSubmit} = this.childProps
 
-    // While results suggestions are up, prevent *Enter* key from triggering 
+    // While results suggestions are up, prevent *Enter* key from triggering
     // onSubmit
     if (_.isEmpty(this.state.results) && onSubmit) {
       // Keep "bubbling" to child onChange to parent if results is clear
