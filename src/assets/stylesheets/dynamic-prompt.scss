@@ -1,0 +1,30 @@
+@import 'photon/variables.scss';
+
+.dynamic-prompt {
+  display: flex;
+  flex-direction: row;
+
+  div {
+    &:not(:last-child) {
+      margin-right: 0.3em;
+    }
+  }
+
+  [contenteditable] {
+    border-radius: $default-border-radius;
+    cursor: text;
+
+    // Fixes the odd beginning cursor position
+    -webkit-appearance: textfield;
+    -webkit-user-select: text;
+
+    &:empty:before {
+      content: attr(placeholder);
+      color: $border-color;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

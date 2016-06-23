@@ -1,4 +1,6 @@
 @import 'photon/photon.scss';
+@import 'dynamic-prompt.scss';
+@import 'autocomplete.scss';
 
 /**********/
 /* Layout */
@@ -34,63 +36,4 @@ body {
 @keyframes Spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-/***********/
-/* Content */
-/***********/
-
-.autocomplete {
-  position: relative;
-
-  > .autocomplete-results {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 2;
-
-    list-style: none;
-    border: 1px solid $border-color;
-    border-radius: $default-border-radius;
-    margin: 6px 0 0 0;
-    padding: 0;
-
-    > .autocomplete-result.selected {
-      &:first-child {
-        border-radius: $default-border-radius $default-border-radius 0 0;
-      }
-
-      &:last-child {
-        border-radius: 0 0 $default-border-radius $default-border-radius;
-      }
-    }
-  }
-}
-
-.dynamic-prompt {
-  display: flex;
-  flex-direction: row;
-
-  div {
-    &:not(:last-child) {
-      margin-right: 0.3em;
-    }
-  }
-
-  [contenteditable] {
-    border-radius: $default-border-radius;
-    cursor: text;
-
-    // Fixes the odd beginning cursor position
-    -webkit-appearance: textfield;
-    -webkit-user-select: text;
-
-    &:empty:before {
-      content: attr(placeholder);
-      color: $border-color;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
 }
