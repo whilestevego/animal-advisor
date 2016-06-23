@@ -71,7 +71,7 @@ export default [
   }, {
     name: 'One Does Not Simply Walk into Mordor',
     pattern: /^(one does not simply) (.*)/i,
-    help: 'one does not simply {text}',
+    help: 'One does not simply {text}',
     url: 'da2i4A'
   }, {
     name: 'Super Cool Ski Instructor',
