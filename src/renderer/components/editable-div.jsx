@@ -31,6 +31,7 @@ export default class EditableDiv extends Component {
     window.getSelection().removeAllRanges()
   }
 
+  // LIFECYCLE CONTROL
   componentDidMount () {
     if (this.props.toFocus === true) {
       this.refs.base.focus()
