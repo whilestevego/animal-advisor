@@ -1,6 +1,7 @@
 // React and Components
 import React, {PropTypes, Component} from 'react'
 import EditableDiv from './editable-div'
+import Ico from './ico'
 
 // Packaged Libraries
 import _ from 'lodash'
@@ -92,6 +93,7 @@ export default class DynamicPrompt extends Component {
         className='dynamic-prompt form-control'
         onKeyDown={this.submitOnEnter}
         onKeyUp={this.manageKeyInput}>
+        <Ico name='eye' />
         { this.renderDynamicField() }
       </div>
     )
