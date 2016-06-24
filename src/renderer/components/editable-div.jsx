@@ -11,15 +11,6 @@ export default class EditableDiv extends Component {
   }
 
   // EVENT HANDLERS
-  // Highjack clipboard paste event to only allow text input
-  // (May not be necessary)
-  whitelistText = event => {
-    event.preventDefault()
-
-    const text = event.clipboardData.getData('text/plain')
-    document.execCommand('insertHTML', false, text)
-  }
-
   // Pre-select all `contentEditable` contents when focused
   selectEditableContents = event => {
     selectNodeContents(event.target)
