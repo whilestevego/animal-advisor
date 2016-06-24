@@ -22,7 +22,7 @@
     color: $dark-border-color;
   }
 
-  .editable.active {
+  .editable-div.active {
     border-radius: $default-border-radius;
     padding-left: 1px; // Without this, cursor does not show
     cursor: text;
