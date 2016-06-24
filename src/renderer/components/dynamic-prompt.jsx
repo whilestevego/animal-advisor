@@ -90,7 +90,7 @@ export default class DynamicPrompt extends Component {
   render () {
     return (
       <div
-        className='dynamic-prompt form-control'
+        className='dynamic-prompt'
         onKeyDown={this.submitOnEnter}
         onKeyUp={this.manageKeyInput}>
         <Ico name='eye' />

@@ -8,20 +8,20 @@
 /**********/
 
 body {
-  margin: 0.5em;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  font-size: 16px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
 
-  > section {
-    width: 100%;
-    padding: 0 1em;
-    margin: 1em 0;
+  > #root {
+    margin: 0.5em;
+    width: calc(100% - 1em);
   }
 }
 
-
-@keyframes Spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.consultation {
+  > *:not(:last-child) {
+    margin-bottom: 0.5em;
+  }
 }
