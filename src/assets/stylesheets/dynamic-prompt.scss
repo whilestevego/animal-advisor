@@ -26,7 +26,6 @@
     border-radius: $default-border-radius;
     padding-left: 1px; // Without this, cursor does not show
     cursor: text;
-    display: block;
 
     // Fixes the odd beginning cursor position
     -webkit-appearance: textfield;
