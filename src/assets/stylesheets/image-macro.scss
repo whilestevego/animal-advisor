@@ -1,0 +1,11 @@
+@import 'photon/variables.scss';
+@import 'animations.scss';
+
+.image-macro {
+  max-width: 100%;
+  max-height: 100%;
+
+  &.loading {
+    animation: 0.75s ease-out infinite PulseFade;
+  }
+}

@@ -1,6 +1,7 @@
 @import 'photon/photon.scss';
 @import 'dynamic-prompt.scss';
 @import 'autocomplete.scss';
+@import 'image-macro.scss';
 
 /**********/
 /* Layout */
@@ -19,19 +20,6 @@ body {
   }
 }
 
-
-/***********/
-/* Content */
-/***********/
-
-#advice-animal {
-  border-radius: 10px;
-  width: 100%;
-}
-
-.placeholder {
-  transform: scale(0.5);
-}
 
 @keyframes Spin {
   from { transform: rotate(0deg); }
