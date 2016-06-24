@@ -1,13 +1,24 @@
-import path from 'path'
-import {copyFile} from '../../lib/utils'
+// Electron Modules
 import {clipboard, remote, shell} from 'electron'
+
+// Node Modules
+import path from 'path'
+
+// Packaged Library
+import genClass from 'classnames'
+
+// React and Components
 import React, {PropTypes} from 'react'
 import ImageMacroMenu from '../menus/animal-advice.js'
+
+// Internal Modules
+import {copyFile} from '../../lib/utils'
+
 
 const {dialog} = remote
 const currentWindow = remote.getCurrentWindow()
 
-export default function ImageMacro ({imagePath}) {
+export default function ImageMacro ({imagePath, isLoading}) {
   ImageMacroMenu.on('reset', () => {})
   ImageMacroMenu.on('save-image-as', () => {
     showSaveImageAsDialog(imagePath)
@@ -17,15 +28,18 @@ export default function ImageMacro ({imagePath}) {
   })
 
   const handleContextMenu = () => {
-    // TODO: Delegate `popup` to menu
     ImageMacroMenu.popup(currentWindow)
   }
+
+  const cn = genClass({
+    'image-macro': true,
+    'loading': isLoading
+  })
 
   return (
     <img
       alt="Advisor Logo"
-      id="advice-animal"
-      className="placeholder"
+      className={cn}
       onContextMenu={handleContextMenu}
       src={imagePath ? imagePath : "../assets/images/doge-icon-512.png"}
     />
@@ -33,6 +47,7 @@ export default function ImageMacro ({imagePath}) {
 }
 
 ImageMacro.propTypes = {
+  isLoading: PropTypes.bool,
   imagePath: PropTypes.string
 }
 

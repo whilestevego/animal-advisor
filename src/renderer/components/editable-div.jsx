@@ -3,7 +3,7 @@
 import React, {PropTypes, Component} from 'react'
 
 // Packaged Library
-import classnames from 'classnames'
+import genClass from 'classnames'
 
 export default class EditableDiv extends Component {
   constructor (props) {
@@ -58,7 +58,7 @@ export default class EditableDiv extends Component {
       }
     }
 
-    const cn = classnames({
+    const cn = genClass({
       'editable-div': true,
       'active': active
     })
