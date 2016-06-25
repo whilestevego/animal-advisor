@@ -35,18 +35,16 @@ export default class Autocomplete extends Component {
     const sentence = event.target.value
 
     Advice
-      .search(sentence, {limit: 5, allowBlank: false})
+      .search(sentence, {limit: 10, allowBlank: false})
       .then(results => {this.setState({results, selectedIndex: 0})})
 
-    // Keep "bubbling" child onChange event to parent component
     if (onChange) onChange(event)
   }
 
   chooseSuggestion = event => {
     const {onSubmit} = this.childProps
+    this._child = null
 
-    // While results suggestions are up, prevent *Enter* key from triggering
-    // onSubmit
     if (_.isEmpty(this.state.results) && onSubmit) {
       // Keep "bubbling" to child onChange to parent if results is clear
       onSubmit(event)
@@ -82,18 +80,25 @@ export default class Autocomplete extends Component {
     }
   }
 
-  render () {
-    const child = cloneElement(
+  renderChild () {
+    if (this._child) {
+      return this._child
+    }
+
+    this._child = cloneElement(
       this.props.children,
       {
         onChange: this.updateCompletions,
         onSubmit: this.chooseSuggestion
       }
     )
+    return this.renderChild()
+  }
 
+  render () {
     return (
       <div className='autocomplete' onKeyDown={this.handleKeyDown}>
-        {child}
+        {this.renderChild()}
         <AutocompleteResults
           selectedIndex={this.state.selectedIndex}
           results={this.state.results} />

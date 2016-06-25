@@ -32,7 +32,7 @@ export default class Consultation extends Component {
       .find(event.target.value)
       .then(advice => advice.generate(pathTo.cache))
       .then(imagePath => {
-        this.setState({imagePath, sentence: '', isLoading: false})
+        this.setState({imagePath, sentence: null, isLoading: false})
         clipboard.writeImage(imagePath)
         sendNotification(imagePath)
       })

@@ -2,7 +2,7 @@
 // React and Components
 import React, {PropTypes, Component} from 'react'
 
-// Packaged Library
+// Packaged Libraries
 import genClass from 'classnames'
 
 export default class EditableDiv extends Component {
@@ -27,10 +27,6 @@ export default class EditableDiv extends Component {
     if (this.props.toFocus === true) {
       this.refs.base.focus()
     }
-  }
-
-  shouldComponentUpdate () {
-    return false
   }
 
   render () {

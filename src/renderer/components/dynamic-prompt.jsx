@@ -3,21 +3,21 @@ import React, {PropTypes, Component} from 'react'
 import EditableDiv from './editable-div'
 import Ico from './ico'
 
-// Packaged Libraries
-import _ from 'lodash'
-
-import {splitByDelimeters} from '../../lib/utils'
+// Internal Libraries
+import Sentence from '../../lib/sentence'
 
 export default class DynamicPrompt extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {sentence: props.sentence}
+    this.state = {
+      sentence: Sentence.fromTemplate(props.sentence)
+    }
   }
 
   clear = () => {
-    this.setState({sentence: ''})
-    this.forceUpdate(
+    this.setState(
+      {sentence: null},
       () => { this.props.onChange({target: {value: ''}})}
     )
   }
@@ -51,16 +51,16 @@ export default class DynamicPrompt extends Component {
     const {sentence} = this.state
     let tabIndexCount = 0
 
-    if (!_.isEmpty(sentence)) {
-      return splitByDelimeters(sentence).map(
-        ({isInside, pos, value}) => {
-          if (isInside) tabIndexCount += 1
+    if (sentence) {
+      return sentence.map(
+        ({isDelimited, value}, pos) => {
+          if (isDelimited) tabIndexCount += 1
 
           return (
             <EditableDiv
-              toFocus={tabIndexCount == 1}
+              toFocus={tabIndexCount === 1}
               key={pos}
-              active={isInside}
+              active={isDelimited}
               tabIndex={tabIndexCount}>
               {value}
             </EditableDiv>
@@ -77,14 +77,11 @@ export default class DynamicPrompt extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({sentence: nextProps.sentence})
+    this.setState({sentence: Sentence.fromTemplate(nextProps.sentence)})
   }
 
-  shouldComponentUpdate (nextProps) {
-    if (nextProps.sentence === this.props.sentence) {
-      return false
-    }
-    return true
+  componentWillUpdate () {
+    console.log('DynamicPrompt updated...')
   }
 
   render () {
