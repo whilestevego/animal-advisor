@@ -10,6 +10,13 @@ export default class EditableDiv extends Component {
     super(props)
   }
 
+  focusSelf = () => {
+    const {toFocus, active} = this.props
+    if (toFocus === true && active === true) {
+      this.refs.base.focus()
+    }
+  }
+
   // EVENT HANDLERS
   // Pre-select all `contentEditable` contents when focused
   selectEditableContents = event => {
@@ -22,23 +29,35 @@ export default class EditableDiv extends Component {
     window.getSelection().removeAllRanges()
   }
 
-  // LIFECYCLE CONTROL
-  componentDidMount () {
-    if (this.props.toFocus === true) {
-      this.refs.base.focus()
+  preventNewLine = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
     }
+  }
+
+  // LIFECYCLE EVENTS
+  componentDidMount () {
+    this.focusSelf()
+  }
+
+  componentDidUpdate () {
+    this.focusSelf()
   }
 
   render () {
     const {children, active, tabIndex, ...restProps} = this.props
-    const {clearSelectionRanges, selectEditableContents, whitelistText} = this
+    const {
+      clearSelectionRanges,
+      selectEditableContents,
+      preventNewLine
+    } = this
 
     let activeProps = {}
     if (active) {
       activeProps = {
         onBlur: clearSelectionRanges,
         onFocus: selectEditableContents,
-        onPaste: whitelistText,
+        onKeyDown: preventNewLine,
         tabIndex: tabIndex || 1,
         contentEditable: true,
         placeholder: children

@@ -58,7 +58,7 @@ export default class DynamicPrompt extends Component {
 
           return (
             <EditableDiv
-              toFocus={tabIndexCount === 1}
+              toFocus={tabIndexCount === 1 && isDelimited}
               key={pos}
               active={isDelimited}
               tabIndex={tabIndexCount}>
@@ -77,11 +77,11 @@ export default class DynamicPrompt extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({sentence: Sentence.fromTemplate(nextProps.sentence)})
-  }
-
-  componentWillUpdate () {
-    console.log('DynamicPrompt updated...')
+    if (!nextProps.sentence) {
+      this.clear()
+    } else {
+      this.setState({sentence: Sentence.fromTemplate(nextProps.sentence)})
+    }
   }
 
   render () {
