@@ -33,6 +33,10 @@ export default class Sentence {
     return new Sentence(metaText, delimiters)
   }
 
+  static ofOne (isDelimited = true, delimiters = undefined) {
+    return new Sentence([{isDelimited, value: ''}], delimiters)
+  }
+
   toString() {
     return `[object ${this.constructor.name}]`
   }
@@ -66,7 +70,13 @@ export default class Sentence {
   }
 
   setAt (pos, value) {
-    this._data[pos] = value
+    this._data[pos].value = value
+  }
+
+  assocAt (pos, value) {
+    const newSentence = new Sentence(this._data, this._delimiters)
+    newSentence.setAt(pos, value)
+    return newSentence
   }
 
   joinLeft (pos) {
