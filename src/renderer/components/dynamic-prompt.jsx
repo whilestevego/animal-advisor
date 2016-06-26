@@ -7,48 +7,9 @@ import Ico from './ico'
 import Sentence from '../../lib/sentence'
 
 export default class DynamicPrompt extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      sentence: Sentence.fromTemplate(props.sentence)
-    }
-  }
-
-  clear = () => {
-    this.setState(
-      {sentence: null},
-      () => { this.props.onChange({target: {value: ''}})}
-    )
-  }
-
   // EVENT HANDLERS
-  submitOnEnter = event => {
-    const {onSubmit} = this.props
-    const {textContent} = event.currentTarget
-
-    if (event.key === 'Enter') {
-      event.preventDefault()
-
-      if (onSubmit) onSubmit({target: {value: textContent}})
-    }
-  }
-
-  manageKeyInput = event => {
-    const {onChange} = this.props
-    const {textContent} = event.currentTarget
-    const {key, ctrlKey} = event
-
-    if (/Esc/.test(key) || (ctrlKey && /c/.test(key))) {
-      this.clear()
-    } else if (!/Arrow|Enter/.test(key) && onChange) {
-      onChange({target: {value: textContent}})
-    }
-  }
-
-  // SUB-RENDER
-  renderDynamicField () {
-    const {sentence} = this.state
+  renderFields () {
+    const {onChange, sentence} = this.props
     let tabIndexCount = 0
 
     if (sentence) {
@@ -60,6 +21,8 @@ export default class DynamicPrompt extends Component {
             <EditableDiv
               toFocus={tabIndexCount === 1 && isDelimited}
               key={pos}
+              pos={pos}
+              onChange={onChange}
               active={isDelimited}
               tabIndex={tabIndexCount}>
               {value}
@@ -70,17 +33,11 @@ export default class DynamicPrompt extends Component {
     } else {
       return (
         <EditableDiv
+          pos={1}
+          onChange={onChange}
           toFocus={true}
           tabIndex={1} />
       )
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!nextProps.sentence) {
-      this.clear()
-    } else {
-      this.setState({sentence: Sentence.fromTemplate(nextProps.sentence)})
     }
   }
 
@@ -88,21 +45,19 @@ export default class DynamicPrompt extends Component {
     return (
       <div
         className='dynamic-prompt'
-        onKeyDown={this.submitOnEnter}
         onKeyUp={this.manageKeyInput}>
         <Ico name='eye' />
-        { this.renderDynamicField() }
+        { this.renderFields() }
       </div>
     )
   }
 }
 
 DynamicPrompt.propTypes = {
-  sentence: PropTypes.string,
-  onSubmit: PropTypes.func,
+  sentence: PropTypes.instanceOf(Sentence),
   onChange: PropTypes.func
 }
 
 DynamicPrompt.defaultProps = {
-  sentence: ''
+  sentence: Sentence.ofOne()
 }

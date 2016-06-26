@@ -45,7 +45,15 @@ export default class EditableDiv extends Component {
   }
 
   render () {
-    const {children, active, tabIndex, ...restProps} = this.props
+    const {
+      children,
+      active,
+      tabIndex,
+      pos,
+      onChange,
+      ...restProps
+    } = this.props
+
     const {
       clearSelectionRanges,
       selectEditableContents,
@@ -55,6 +63,7 @@ export default class EditableDiv extends Component {
     let activeProps = {}
     if (active) {
       activeProps = {
+        onInput: onChange,
         onBlur: clearSelectionRanges,
         onFocus: selectEditableContents,
         onKeyDown: preventNewLine,
@@ -72,6 +81,7 @@ export default class EditableDiv extends Component {
     return (
       <div
         ref='base'
+        data-pos={pos}
         className={cn}
         {...activeProps}
         {...restProps}>
@@ -85,8 +95,9 @@ EditableDiv.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.string,
   tabIndex: PropTypes.number,
+  pos: PropTypes.number,
   toFocus: PropTypes.bool,
-  onExpand: PropTypes.func
+  onChange: PropTypes.func
 }
 
 EditableDiv.defaultProps = {

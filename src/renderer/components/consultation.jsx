@@ -11,6 +11,9 @@ import Autocomplete from './autocomplete'
 // Internal Libraries
 import Advice from '../../lib/advice'
 
+// Internal Libraries
+import Sentence from '../../lib/sentence'
+
 const pathTo = remote.getGlobal('pathTo')
 
 export default class Consultation extends Component {
@@ -18,46 +21,68 @@ export default class Consultation extends Component {
     super(props)
 
     this.state = {
-      sentence: '',
+      sentence: Sentence.ofOne(),
       error: null,
       imagePath: '',
       isLoading: false
     }
   }
 
+  get errorMessage () {
+    return this.state.error ? this.state.error.message : ''
+  }
+
   getImageMacro = (event) => {
-    this.setState({isLoading: true, error: null, imagePath: ''})
+    this.setState({error: null, isLoading: true, imagePath: ''})
 
     Advice
       .find(event.target.value)
       .then(advice => advice.generate(pathTo.cache))
       .then(imagePath => {
-        this.setState({imagePath, sentence: null, isLoading: false})
+        this.setState({
+          imagePath,
+          sentence: Sentence.ofOne(),
+          isLoading: false
+        })
+
         clipboard.writeImage(imagePath)
         sendNotification(imagePath)
       })
       .catch(error => {
-        this.setState({error, isLoading: false})
+        this.setState({
+          error,
+          sentence: Sentence.ofOne(),
+          isLoading: false
+        })
       })
   }
 
-  updateDynamicPrompt = (event) => {
-    this.setState({sentence: event.target.value})
+  // DYNAMIC PROMPT HANDLERS
+  handleOnChange = event => {
+    const {target} = event
+    const pos = target.getAttribute('data-pos')
+    const value = target.textContent
+
+    this.setState({
+      sentence: this.state.sentence.assocAt(pos, value)
+    })
   }
 
-  get errorMsg () {
-    return this.state.error ? this.state.error.message : ''
+  // AUTOCOMPLETE EVENT HANDLERS
+  handleSuggestionSelect = (selection) => {
+    this.setState({sentence: Sentence.fromTemplate(selection)})
   }
 
   render() {
     return (
       <section className="consultation">
-        <div>{this.errorMsg}</div>
-        <Autocomplete onSuggestionChoice={this.updateDynamicPrompt}>
-          <DynamicPrompt
-            onSubmit={this.getImageMacro}
-            sentence={this.state.sentence} />
-        </Autocomplete>
+        <div>{this.errorMessage}</div>
+        <DynamicPrompt
+          onChange={this.handleOnChange}
+          sentence={this.state.sentence} />
+        <Autocomplete
+          query={this.state.sentence.toPlainText()}
+          onSuggestionSelect={this.updateDynamicPrompt} />
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />

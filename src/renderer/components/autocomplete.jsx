@@ -1,5 +1,5 @@
 // React and Components
-import React, {PropTypes, Component, cloneElement} from 'react'
+import React, {PropTypes, Component} from 'react'
 import AutocompleteResults from './autocomplete-results'
 
 // Packaged Libraries
@@ -20,54 +20,38 @@ export default class Autocomplete extends Component {
     super(props)
 
     this.state = {
-      selectedIndex: 0,
-      results: props.results
+      selectedIndex: null,
+      results: []
     }
   }
 
-  get childProps () {
-    return this.props.children.props
-  }
-
-  // Event Handlers
-  updateCompletions = event => {
-    const {onChange} = this.childProps
-    const sentence = event.target.value
-
+  fetchSuggestions (query) {
     Advice
-      .search(sentence, {limit: 10, allowBlank: false})
+      .search(query, {limit: 10, allowBlank: false})
       .then(results => {this.setState({results, selectedIndex: 0})})
-
-    if (onChange) onChange(event)
   }
 
+  // EVENT HANDLERS
   chooseSuggestion = event => {
-    const {onSubmit} = this.childProps
-    this._child = null
+    const {selectedIndex, results} = this.state
 
-    if (_.isEmpty(this.state.results) && onSubmit) {
-      // Keep "bubbling" to child onChange to parent if results is clear
-      onSubmit(event)
-    } else {
-      const {selectedIndex, results} = this.state
+    this.setState({results: [], selectedIndex: 0})
 
-      this.setState({results: [], selectedIndex: 0})
-
-      if (this.props.onSuggestionChoice) {
-        this.props.onSuggestionChoice({
-          target: {
-            value: results[selectedIndex].help
-          }
-        })
-      }
+    if (this.props.onSuggestionSelect) {
+      this.props.onSuggestionSelect({
+        target: {
+          value: results[selectedIndex].help
+        }
+      })
     }
   }
 
   handleKeyDown = event => {
-    event.stopPropagation()
-
     if (_(keyMaps).keys().includes(event.key)) {
-      const {selectedIndex, results} = this.state
+      event.stopPropagation()
+
+      let {selectedIndex, results} = this.state
+      if (selectedIndex === null) selectedIndex = 0
 
       this.setState({
         // *clamp* keeps index inside result bounds
@@ -80,40 +64,24 @@ export default class Autocomplete extends Component {
     }
   }
 
-  renderChild () {
-    if (this._child) {
-      return this._child
-    }
-
-    this._child = cloneElement(
-      this.props.children,
-      {
-        onChange: this.updateCompletions,
-        onSubmit: this.chooseSuggestion
-      }
-    )
-    return this.renderChild()
+  componentWillReceiveProps (nextProps) {
+    this.fetchSuggestions(nextProps.query)
   }
 
   render () {
     return (
-      <div className='autocomplete' onKeyDown={this.handleKeyDown}>
-        {this.renderChild()}
+      <section
+        className='autocomplete'
+        onKeyDown={this.handleKeyDown}>
         <AutocompleteResults
           selectedIndex={this.state.selectedIndex}
           results={this.state.results} />
-      </div>
+      </section>
     )
   }
 }
 
 Autocomplete.propTypes = {
-  // Verify that children contains only one
-  onSuggestionChoice: PropTypes.func,
-  children: PropTypes.element.isRequired,
-  results: PropTypes.array
-}
-
-Autocomplete.defaultProps = {
-  results: []
+  query: PropTypes.string,
+  onSuggestionSelect: PropTypes.func
 }
