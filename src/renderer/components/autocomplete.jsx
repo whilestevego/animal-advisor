@@ -3,7 +3,7 @@ import React, {PropTypes, Component} from 'react'
 import AutocompleteResults from './autocomplete-results'
 
 // External Libraries
-import {clamp, isFunction} from 'lodash'
+import {clamp, isEmpty, isFunction} from 'lodash'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
@@ -54,7 +54,7 @@ export default class Autocomplete extends Component {
     const {results, selectionIndex} = this.state
     const {onSuggestionSelect} = this.props
 
-    if (isFunction(onSuggestionSelect)) {
+    if (isFunction(onSuggestionSelect) && !isEmpty(results)) {
       this.setState({selectionIndex: 0, results: []})
       this.props.onSuggestionSelect(results[selectionIndex])
     }
