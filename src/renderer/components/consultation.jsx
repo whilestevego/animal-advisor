@@ -77,7 +77,6 @@ export default class Consultation extends Component {
   }
 
   clearSentence = () => {
-    console.log('Clearing sentence...')
     this.setState({
       sentence: Sentence.ofOne(),
       error: null
