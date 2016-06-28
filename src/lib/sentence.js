@@ -1,4 +1,4 @@
-import {inRange, isString, isEmpty, isArray} from 'lodash'
+import {uniqueId, inRange, isString, isEmpty, isArray} from 'lodash'
 
 export default class Sentence {
   constructor (metaText, delimiters = ['{', '}']) {
@@ -34,11 +34,7 @@ export default class Sentence {
   }
 
   static ofOne (isDelimited = true, delimiters = undefined) {
-    return new Sentence([{isDelimited, value: ''}], delimiters)
-  }
-
-  toString() {
-    return `[object ${this.constructor.name}]`
+    return new Sentence([{_id: uniqueId(), isDelimited, value: ''}], delimiters)
   }
 
   forEach (...args) {
@@ -87,7 +83,6 @@ export default class Sentence {
     return this.joinRange(pos, pos + 1)
   }
 
-  // TODO: Write generic joinWith and joinRange functions
   joinRange (start, end) {
     const [left, right] = [0, this.length - 1]
 
@@ -128,6 +123,10 @@ export default class Sentence {
       return plainText + value
     }, '')
   }
+
+  toString() {
+    return `[object ${this.constructor.name}]`
+  }
 }
 
 function splitByDelimeters (
@@ -141,10 +140,10 @@ function splitByDelimeters (
     const c = templateText[i]
 
     if (open.test(c) && i > 0) {
-      fields.push({isDelimited: false, value: reg})
+      fields.push({_id: uniqueId(), isDelimited: false, value: reg})
       reg = ''
     } else if (close.test(c)) {
-      fields.push({isDelimited: true, value: reg})
+      fields.push({_id: uniqueId(), isDelimited: true, value: reg})
       reg = ''
     } else {
       if (!open.test(c) && !close.test(c)) reg += c
@@ -152,7 +151,7 @@ function splitByDelimeters (
   }
 
   if (!isEmpty(reg)) {
-    fields.push({isDelimited: false, value: reg})
+    fields.push({_id: uniqueId(), isDelimited: false, value: reg})
   }
 
   return fields
