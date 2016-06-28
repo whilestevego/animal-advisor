@@ -5,13 +5,13 @@ import AutocompleteResult from './autocomplete-result'
 // Packaged Library
 import _ from 'lodash'
 
-export default function AutocompleteResults ({results, selectedIndex}) {
+export default function AutocompleteResults ({results, selectionIndex}) {
   let style = {}
   if (_.isEmpty(results)) { style.display = 'none' }
 
   if (!_.isEmpty(results) &&
-      !_.inRange(selectedIndex, 0, results.length)) {
-    throw new Error('selectedIndex is out of bounds')
+      !_.inRange(selectionIndex, 0, results.length)) {
+    throw new Error('selectionIndex is out of bounds')
   }
 
   return (
@@ -20,7 +20,7 @@ export default function AutocompleteResults ({results, selectedIndex}) {
         results.map((result, i) => (
           <AutocompleteResult
             key={i}
-            isSelected={selectedIndex == i}
+            isSelected={selectionIndex == i}
             {...result} />
           ))
       }
@@ -30,5 +30,5 @@ export default function AutocompleteResults ({results, selectedIndex}) {
 
 AutocompleteResults.propTypes = {
   results: PropTypes.array.isRequired,
-  selectedIndex: PropTypes.number
+  selectionIndex: PropTypes.number
 }

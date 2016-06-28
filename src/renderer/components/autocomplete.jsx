@@ -1,17 +1,13 @@
 // React and Components
-import React, {PropTypes, Component, cloneElement} from 'react'
+import React, {PropTypes, Component} from 'react'
 import AutocompleteResults from './autocomplete-results'
 
-// Packaged Libraries
-import _ from 'lodash'
+// External Libraries
+import {clamp, isEmpty, isFunction} from 'lodash'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
-
-const keyMaps = {
-  'ArrowDown': index => index + 1,
-  'ArrowUp': index => index - 1
-}
+import {onCommand} from '../../lib/commands'
 
 // TODO: Autocomplete represents a generic component, yet this component will 
 // currently only function with Advice style data. Do something about this!
@@ -20,100 +16,70 @@ export default class Autocomplete extends Component {
     super(props)
 
     this.state = {
-      selectedIndex: 0,
-      results: props.results
+      selectionIndex: 0,
+      results: []
     }
   }
 
-  get childProps () {
-    return this.props.children.props
+  fetchSuggestions (query) {
+    Advice
+      .search(query, {limit: 10, allowBlank: false})
+      .then(results => {this.setState({results, selectedIndex: 0})})
   }
 
-  // Event Handlers
-  updateCompletions = event => {
-    const {onChange} = this.childProps
-    const sentence = event.target.value
+  // EVENT HANDLERS
+  componentWillReceiveProps (nextProps) {
+    const {query} = this.state
 
-    Advice
-      .search(sentence, {limit: 10, allowBlank: false})
-      .then(results => {this.setState({results, selectedIndex: 0})})
+    if (query !== nextProps.query) {
+      this.fetchSuggestions(nextProps.query)
+    }
+  }
 
-    if (onChange) onChange(event)
+  incrementIndex = event => {
+    const {results, selectionIndex} = this.state
+    this.setState({
+      selectionIndex: clamp(selectionIndex + 1, 0, results.length - 1)
+    })
+  }
+
+  decrementIndex = event => {
+    const {results, selectionIndex} = this.state
+    this.setState({
+      selectionIndex: clamp(selectionIndex - 1, 0, results.length - 1)
+    })
   }
 
   chooseSuggestion = event => {
-    const {onSubmit} = this.childProps
-    this._child = null
+    const {results, selectionIndex} = this.state
+    const {onSuggestionSelect} = this.props
 
-    if (_.isEmpty(this.state.results) && onSubmit) {
-      // Keep "bubbling" to child onChange to parent if results is clear
-      onSubmit(event)
-    } else {
-      const {selectedIndex, results} = this.state
-
-      this.setState({results: [], selectedIndex: 0})
-
-      if (this.props.onSuggestionChoice) {
-        this.props.onSuggestionChoice({
-          target: {
-            value: results[selectedIndex].help
-          }
-        })
-      }
+    if (isFunction(onSuggestionSelect) && !isEmpty(results)) {
+      this.setState({selectionIndex: 0, results: []})
+      this.props.onSuggestionSelect(results[selectionIndex])
     }
   }
 
-  handleKeyDown = event => {
-    event.stopPropagation()
-
-    if (_(keyMaps).keys().includes(event.key)) {
-      const {selectedIndex, results} = this.state
-
-      this.setState({
-        // *clamp* keeps index inside result bounds
-        selectedIndex: _.clamp(
-          keyMaps[event.key](selectedIndex),
-          0,
-          results.length - 1
-        )
-      })
-    }
-  }
-
-  renderChild () {
-    if (this._child) {
-      return this._child
-    }
-
-    this._child = cloneElement(
-      this.props.children,
-      {
-        onChange: this.updateCompletions,
-        onSubmit: this.chooseSuggestion
-      }
-    )
-    return this.renderChild()
+  // THE CYCLE OF LIFE
+  componentDidMount () {
+    onCommand('next-suggestion', this.incrementIndex)
+    onCommand('previous-suggestion', this.decrementIndex)
+    onCommand('choose-suggestion', this.chooseSuggestion)
   }
 
   render () {
     return (
-      <div className='autocomplete' onKeyDown={this.handleKeyDown}>
-        {this.renderChild()}
+      <section className='autocomplete'>
         <AutocompleteResults
-          selectedIndex={this.state.selectedIndex}
+          selectionIndex={this.state.selectionIndex}
           results={this.state.results} />
-      </div>
+      </section>
     )
   }
 }
 
 Autocomplete.propTypes = {
-  // Verify that children contains only one
-  onSuggestionChoice: PropTypes.func,
-  children: PropTypes.element.isRequired,
-  results: PropTypes.array
-}
-
-Autocomplete.defaultProps = {
-  results: []
+  query: PropTypes.string,
+  selectionIndex: PropTypes.number,
+  onSuggestionSelect: PropTypes.func
 }
