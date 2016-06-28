@@ -2,16 +2,12 @@
 import React, {PropTypes, Component} from 'react'
 import AutocompleteResults from './autocomplete-results'
 
-// Packaged Libraries
-import _ from 'lodash'
+// External Libraries
+import {clamp, isFunction} from 'lodash'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
-
-const keyMaps = {
-  'ArrowDown': index => index + 1,
-  'ArrowUp': index => index - 1
-}
+import {onCommand} from '../../lib/commands'
 
 // TODO: Autocomplete represents a generic component, yet this component will 
 // currently only function with Advice style data. Do something about this!
@@ -20,7 +16,7 @@ export default class Autocomplete extends Component {
     super(props)
 
     this.state = {
-      selectedIndex: null,
+      selectionIndex: 0,
       results: []
     }
   }
@@ -32,49 +28,50 @@ export default class Autocomplete extends Component {
   }
 
   // EVENT HANDLERS
-  chooseSuggestion = event => {
-    const {selectedIndex, results} = this.state
-
-    this.setState({results: [], selectedIndex: 0})
-
-    if (this.props.onSuggestionSelect) {
-      this.props.onSuggestionSelect({
-        target: {
-          value: results[selectedIndex].help
-        }
-      })
-    }
-  }
-
-  handleKeyDown = event => {
-    if (_(keyMaps).keys().includes(event.key)) {
-      event.stopPropagation()
-
-      let {selectedIndex, results} = this.state
-      if (selectedIndex === null) selectedIndex = 0
-
-      this.setState({
-        // *clamp* keeps index inside result bounds
-        selectedIndex: _.clamp(
-          keyMaps[event.key](selectedIndex),
-          0,
-          results.length - 1
-        )
-      })
-    }
-  }
-
   componentWillReceiveProps (nextProps) {
-    this.fetchSuggestions(nextProps.query)
+    const {query} = this.state
+
+    if (query !== nextProps.query) {
+      this.fetchSuggestions(nextProps.query)
+    }
+  }
+
+  incrementIndex = event => {
+    const {results, selectionIndex} = this.state
+    this.setState({
+      selectionIndex: clamp(selectionIndex + 1, 0, results.length - 1)
+    })
+  }
+
+  decrementIndex = event => {
+    const {results, selectionIndex} = this.state
+    this.setState({
+      selectionIndex: clamp(selectionIndex - 1, 0, results.length - 1)
+    })
+  }
+
+  chooseSuggestion = event => {
+    const {results, selectionIndex} = this.state
+    const {onSuggestionSelect} = this.props
+
+    if (isFunction(onSuggestionSelect)) {
+      this.setState({selectionIndex: 0, results: []})
+      this.props.onSuggestionSelect(results[selectionIndex])
+    }
+  }
+
+  // THE CYCLE OF LIFE
+  componentDidMount () {
+    onCommand('next-suggestion', this.incrementIndex)
+    onCommand('previous-suggestion', this.decrementIndex)
+    onCommand('choose-suggestion', this.chooseSuggestion)
   }
 
   render () {
     return (
-      <section
-        className='autocomplete'
-        onKeyDown={this.handleKeyDown}>
+      <section className='autocomplete'>
         <AutocompleteResults
-          selectedIndex={this.state.selectedIndex}
+          selectionIndex={this.state.selectionIndex}
           results={this.state.results} />
       </section>
     )
@@ -83,5 +80,6 @@ export default class Autocomplete extends Component {
 
 Autocomplete.propTypes = {
   query: PropTypes.string,
+  selectionIndex: PropTypes.number,
   onSuggestionSelect: PropTypes.func
 }

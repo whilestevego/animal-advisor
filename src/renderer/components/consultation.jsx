@@ -10,9 +10,13 @@ import Autocomplete from './autocomplete'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
-
-// Internal Libraries
 import Sentence from '../../lib/sentence'
+import {
+  onCommand,
+  getCommandEvent,
+  hasKeyCombo,
+  toKeyCombo
+} from '../../lib/commands'
 
 const pathTo = remote.getGlobal('pathTo')
 
@@ -32,11 +36,11 @@ export default class Consultation extends Component {
     return this.state.error ? this.state.error.message : ''
   }
 
-  getImageMacro = (event) => {
+  getImageMacro = () => {
     this.setState({error: null, isLoading: true, imagePath: ''})
 
     Advice
-      .find(event.target.value)
+      .find(this.state.sentence.toPlainText())
       .then(advice => advice.generate(pathTo.cache))
       .then(imagePath => {
         this.setState({
@@ -57,6 +61,10 @@ export default class Consultation extends Component {
       })
   }
 
+  hasSuggestion = () => {
+    return this.state.sentence.hasUneditables()
+  }
+
   // DYNAMIC PROMPT HANDLERS
   handleOnChange = event => {
     const {target} = event
@@ -68,12 +76,46 @@ export default class Consultation extends Component {
     })
   }
 
+  clearSentence = () => {
+    console.log('Clearing sentence...')
+    this.setState({
+      sentence: Sentence.ofOne(),
+      error: null
+    })
+  }
+
   // AUTOCOMPLETE EVENT HANDLERS
-  handleSuggestionSelect = (selection) => {
-    this.setState({sentence: Sentence.fromTemplate(selection)})
+  fillPrompt = selection => {
+    this.setState({sentence: Sentence.fromTemplate(selection.help)})
+  }
+
+  handleGlobalKeyDown = event => {
+    if (hasKeyCombo(toKeyCombo(event))) {
+      event.preventDefault()
+      event.stopPropagation()
+
+      event.target.dispatchEvent(getCommandEvent(toKeyCombo(event)))
+    }
+  }
+
+  // THE CYCLE OF LIFE
+  componentDidMount () {
+    document.body.addEventListener('keydown', this.handleGlobalKeyDown)
+
+    onCommand('generate-image', this.getImageMacro)
+    onCommand('clear-sentence', this.clearSentence)
+  }
+
+  componentWillUnmount () {
+    document.body.removeEventListener('keydown', this.handleGlobalKeyDown)
   }
 
   render() {
+    let query = ''
+    if (!this.hasSuggestion()) {
+      query = this.state.sentence.toPlainText()
+    }
+
     return (
       <section className="consultation">
         <div>{this.errorMessage}</div>
@@ -81,8 +123,9 @@ export default class Consultation extends Component {
           onChange={this.handleOnChange}
           sentence={this.state.sentence} />
         <Autocomplete
-          query={this.state.sentence.toPlainText()}
-          onSuggestionSelect={this.updateDynamicPrompt} />
+          query={query}
+          onSuggestionSelect={this.fillPrompt}
+        />
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />

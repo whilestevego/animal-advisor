@@ -69,6 +69,13 @@ export default class Sentence {
     this._data[pos].value = value
   }
 
+  hasUneditables ()  {
+    for (let {isDelimited} of this._data) {
+      if (!isDelimited) return true
+    }
+    return false
+  }
+
   assocAt (pos, value) {
     const newSentence = new Sentence(this._data, this._delimiters)
     newSentence.setAt(pos, value)

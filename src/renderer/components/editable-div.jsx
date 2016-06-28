@@ -40,10 +40,6 @@ export default class EditableDiv extends Component {
     this.focusSelf()
   }
 
-  componentDidUpdate () {
-    this.focusSelf()
-  }
-
   render () {
     const {
       children,
