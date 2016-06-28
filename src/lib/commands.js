@@ -14,7 +14,11 @@ export const keyBinds = new Map ([
 export const commandBinds = (() => {
   const newMap = new Map()
   for (let [key, val] of keyBinds.entries()) {
-    newMap.set(val, key)
+    if (newMap.has(val)) {
+      newMap.set(val, newMap.get(val).concat(key))
+    } else {
+      newMap.set(val, [key])
+    }
   }
 
   return newMap
