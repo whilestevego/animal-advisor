@@ -1,16 +1,38 @@
 /* global Event KeyboardEvent */
-import {identity, isMap, isEmpty} from 'lodash'
+import {identity, isMap, isString, isEmpty} from 'lodash'
 
-export const keyBindings = new Map ([
+export const keyBinds = new Map ([
   ['arrowdown', 'next-suggestion'],
   ['arrowup', 'previous-suggestion'],
   ['arrowright', 'choose-suggestion'],
   ['ctrl+c', 'clear-sentence'],
   ['esc', 'clear-sentence'],
-  ['backspace', 'join-left']
+  ['enter', 'generate-image']
+  //['backspace', 'join-left']
 ])
 
-export function getEvent (keyCombo) {
+export const commandBinds = (() => {
+  const newMap = new Map()
+  for (let [key, val] of keyBinds.entries()) {
+    newMap.set(val, key)
+  }
+
+  return newMap
+})()
+
+export function onCommand (command, callback) {
+  if (!isString(command)) {
+    throw new TypeError(`Expected string instead got ${typeof combo}`)
+  }
+
+  if (!hasCommand(command)) {
+    throw new Error(`Key combo, ${command}, is not bound`)
+  }
+
+  return document.body.addEventListener(command, callback)
+}
+
+export function getCommandEvent (keyCombo) {
   if (!isMap(window._memoiz)) {
     window._memoiz = new Map()
   }
@@ -21,13 +43,17 @@ export function getEvent (keyCombo) {
 
   window._memoiz.set(
     keyCombo,
-    new Event(keyBindings.get(keyCombo), {bubbles: true})
+    new CommandEvent(keyBinds.get(keyCombo), {bubbles: true})
   )
-  return getEvent(keyCombo)
+  return getCommandEvent(keyCombo)
 }
 
 export function hasKeyCombo (keyCombo) {
-  return keyBindings.has(keyCombo)
+  return keyBinds.has(keyCombo)
+}
+
+export function hasCommand (keyCombo) {
+  return commandBinds.has(keyCombo)
 }
 
 export function toKeyCombo (keyboardEvent) {
@@ -49,3 +75,5 @@ export function toKeyCombo (keyboardEvent) {
 
   return (isEmpty(prefix) ? '' : `${prefix}+`) + key.toLowerCase()
 }
+
+class CommandEvent extends Event {}
