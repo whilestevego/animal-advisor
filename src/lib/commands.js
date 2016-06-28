@@ -56,8 +56,8 @@ export function hasKeyCombo (keyCombo) {
   return keyBinds.has(keyCombo)
 }
 
-export function hasCommand (keyCombo) {
-  return commandBinds.has(keyCombo)
+export function hasCommand (command) {
+  return commandBinds.has(command)
 }
 
 export function toKeyCombo (keyboardEvent) {
