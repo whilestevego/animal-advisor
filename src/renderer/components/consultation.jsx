@@ -124,8 +124,7 @@ export default class Consultation extends Component {
           sentence={this.state.sentence} />
         <Autocomplete
           query={query}
-          onSuggestionSelect={this.fillPrompt}
-        />
+          onSuggestionSelect={this.fillPrompt} />
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />
