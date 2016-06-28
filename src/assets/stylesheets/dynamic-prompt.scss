@@ -1,8 +1,9 @@
 @import 'photon/variables.scss';
 
 .dynamic-prompt {
-  border: medium solid $dark-border-color;
-  border-radius: $default-border-radius;
+  -webkit-app-region: no-drag;
+  border-top: medium solid $dark-border-color;
+  border-bottom: medium solid $dark-border-color;
   padding: $padding-less;
 
   font-size: 1.2em;
