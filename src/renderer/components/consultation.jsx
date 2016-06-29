@@ -120,6 +120,7 @@ export default class Consultation extends Component {
       <section className="consultation">
         <div>{this.errorMessage}</div>
         <DynamicPrompt
+          disabled={this.state.isLoading}
           onChange={this.handleOnChange}
           sentence={this.state.sentence} />
         <Autocomplete

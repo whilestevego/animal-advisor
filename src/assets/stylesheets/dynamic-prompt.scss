@@ -1,40 +1,52 @@
 @import 'photon/variables.scss';
+@import 'variables.scss';
 
 .dynamic-prompt {
   -webkit-app-region: no-drag;
-  border-top: medium solid $dark-border-color;
-  border-bottom: medium solid $dark-border-color;
-  padding: $padding-less;
+  border-top: medium solid $secondary-color;
+  border-bottom: medium solid $secondary-color;
 
   font-size: 1.2em;
-
+  color: $space-light-color;
+  background-color: White;
   display: flex;
-  flex-flow: row wrap;
 
-  > * {
-    font-size: inherit;
+  &-fields {
+    display: flex;
+    flex-flow: row wrap;
+    padding: $padding;
 
-    &:not(:last-child) {
-      margin-right: 0.25em;
+    > * {
+      font-size: inherit;
+
+      &:not(:last-child) {
+        margin-right: 0.25em;
+      }
     }
   }
 
   .icon {
-    color: $dark-border-color;
+    color: $secondary-color;
+    margin: auto 0;
+    margin-left: $padding-less;
+    font-size: 1.5em;
   }
 
-  .editable-div.active {
-    border-radius: $default-border-radius;
+  .editable-div {
     padding-left: 1px; // Without this, cursor does not show
-    cursor: text;
 
-    // Fixes the odd beginning cursor position
-    -webkit-appearance: textfield;
-    -webkit-user-select: text;
+    &.active {
+      border-radius: $default-border-radius;
+      cursor: text;
 
-    &:empty:before {
-      content: attr(placeholder);
-      color: $border-color;
+      // Fixes the odd beginning cursor position
+      -webkit-appearance: textfield;
+      -webkit-user-select: text;
+
+      &:empty:before {
+        content: attr(placeholder);
+        color: $secondary-color;
+      }
     }
 
     &:focus {
