@@ -7,6 +7,7 @@ import React, {Component} from 'react'
 import DynamicPrompt from './dynamic-prompt'
 import ImageMacro from './image-macro'
 import Autocomplete from './autocomplete'
+import Starfield from './starfield'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
@@ -127,6 +128,7 @@ export default class Consultation extends Component {
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />
+        <Starfield />
       </section>
     )
   }

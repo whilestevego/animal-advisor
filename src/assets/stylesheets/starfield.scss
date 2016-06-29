@@ -1,0 +1,25 @@
+@import 'photon/variables.scss';
+@import 'variables.scss';
+
+.starfield {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  bottom: 0;
+
+  z-index: -2;
+  background: linear-gradient(to bottom, $space-dark-color, $space-light-color);
+
+  svg {
+    .star {
+      animation: 1.5s linear infinite StarStreak;
+    }
+  }
+}
+
+@keyframes StarStreak {
+  to {
+    transform: translate(0, 100vh);
+  }
+}
