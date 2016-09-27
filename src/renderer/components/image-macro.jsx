@@ -37,12 +37,11 @@ export default function ImageMacro ({imagePath, isLoading}) {
   })
 
   return (
-    <img
-      alt="Advisor Logo"
-      className={cn}
-      onContextMenu={handleContextMenu}
-      src={imagePath ? imagePath : "../assets/images/doge-icon-512.png"}
-    />
+    <section className={cn}>
+      <img
+        onContextMenu={handleContextMenu}
+        src={imagePath ? imagePath : ''} />
+    </section>
   )
 }
 

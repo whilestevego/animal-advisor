@@ -16,13 +16,9 @@ export function copyFile (sourcePath, destinationPath) {
   })
 }
 
-export function stripResource (path) {
-  return path.replace(/^.+:\//, '')
-}
-
 export function savePathFromResponse (response, destinationDir) {
   const extension = /image\/(\w+)\b/.exec(response.headers['content-type'])[1]
-  const filename = response.headers['meme-text'].replace(/[^A-Za-z+]/g, '').replace(/\+/g, '-')
+  const filename = response.headers['meme-name'].replace(/[^A-Za-z+]/g, '').replace(/\+/g, '-')
   return `${destinationDir}/${filename}.${extension}`
 }
 

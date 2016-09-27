@@ -1,6 +1,7 @@
 /* global Event KeyboardEvent */
 import {identity, isMap, isString, isEmpty} from 'lodash'
 
+// TODO: Create a table of keyCombo, command and other meta-data
 export const keyBinds = new Map ([
   ['arrowdown', 'next-suggestion'],
   ['arrowup', 'previous-suggestion'],
@@ -11,6 +12,7 @@ export const keyBinds = new Map ([
   //['backspace', 'join-left']
 ])
 
+// TODO: Should become index
 export const commandBinds = (() => {
   const newMap = new Map()
   for (let [key, val] of keyBinds.entries()) {
@@ -65,6 +67,8 @@ export function toKeyCombo (keyboardEvent) {
     throw new TypeError(`Expected Event instead got ${typeof keyboardEvent}`)
   }
 
+  // TODO: event.key is not supported in Safari, make this code X-browser 
+  // compatible
   const {key} = keyboardEvent
   const prefix = ['altKey', 'ctrlKey', 'metaKey', 'shiftKey']
     .map(

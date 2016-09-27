@@ -7,6 +7,7 @@ import React, {Component} from 'react'
 import DynamicPrompt from './dynamic-prompt'
 import ImageMacro from './image-macro'
 import Autocomplete from './autocomplete'
+import Starfield from './starfield'
 
 // Internal Libraries
 import Advice from '../../lib/advice'
@@ -77,7 +78,6 @@ export default class Consultation extends Component {
   }
 
   clearSentence = () => {
-    console.log('Clearing sentence...')
     this.setState({
       sentence: Sentence.ofOne(),
       error: null
@@ -120,6 +120,7 @@ export default class Consultation extends Component {
       <section className="consultation">
         <div>{this.errorMessage}</div>
         <DynamicPrompt
+          disabled={this.state.isLoading}
           onChange={this.handleOnChange}
           sentence={this.state.sentence} />
         <Autocomplete
@@ -128,6 +129,7 @@ export default class Consultation extends Component {
         <ImageMacro
           imagePath={this.state.imagePath}
           isLoading={this.state.isLoading} />
+        <Starfield />
       </section>
     )
   }
