@@ -26,7 +26,7 @@ export default class Starfield extends Component {
           return (
             <Star
               key={index}
-              pos={{x: `${pos}vw`, y: '0vh'}}
+              pos={{x: `${pos}vw`, y: '-2vh'}}
               depth={random(3)} />
           )
         }).value()
