@@ -78,12 +78,12 @@ export default class AdviceAnimalMacro extends Component {
     }
   }
 
-  render () { 
+  render () {
     return (
-      <section className={this.constructor.name}>
+      <section className={kebabCase(this.constructor.name)}>
         <canvas
-          width={this.state.width}
-          height={this.state.height}
+          width={this.state.width * 1.5}
+          height={this.state.height * 1.5}
           ref='canvas'
           onContextMenu={this.handleContextMenu}>
         </canvas>
@@ -130,7 +130,7 @@ function createWriter (cvs, image, font = 'Impact', fontSize = 100) {
 const defaultCaptionOpts = {
   fontName: 'Impact',
   fontSize: 10,
-  margin: 30,
+  margin: 15,
   lineWidth: 5,
   lineJoin: 'bevel',
   textAlign: 'center',
