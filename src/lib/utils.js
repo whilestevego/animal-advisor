@@ -1,5 +1,5 @@
 /* global Image */
-import {each, omit, reduce} from 'lodash'
+import {each, omit, reduce, isEmpty} from 'lodash'
 // Electron Modules
 import {remote, shell} from 'electron'
 // Node Modules

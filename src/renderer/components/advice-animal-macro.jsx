@@ -1,5 +1,5 @@
 /* global Notification */
-import {kebabCase} from 'lodash'
+import {kebabCase, isEmpty} from 'lodash'
 // Electron Modules
 import {clipboard, remote, nativeImage} from 'electron'
 // React and Components
@@ -39,20 +39,31 @@ export default class AdviceAnimalMacro extends Component {
   }
 
   loadImage = url => {
-    getImage(url)
-      .then(image => {
-        this.setState({
-          height: image.height,
-          width: image.width
-        })
+    if (isEmpty(url)) {
+      this.writer = null;
+      this.clearCanvas()
+    } else {
+      getImage(url)
+        .then(image => {
+          this.setState({
+            height: image.height,
+            width: image.width
+          })
 
-        this.writer = createWriter(this.refs.canvas, image)
+          this.writer = createWriter(this.refs.canvas, image)
 
-        this.writer({
-          top: this.props.advice.topCaption,
-          bottom: this.props.advice.bottomCaption
+          this.writer({
+            top: this.props.advice.topCaption,
+            bottom: this.props.advice.bottomCaption
+          })
         })
-      })
+    }
+  }
+
+  clearCanvas = () => {
+    const {canvas} = this.refs
+    const ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
   }
 
   componentDidMount () {

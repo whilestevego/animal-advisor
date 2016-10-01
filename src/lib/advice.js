@@ -7,7 +7,12 @@ export default class Advice {
   constructor (options) {
     const defaultOptions = adviceList[adviceList.length - 1]
 
-    Object.assign(this, defaultOptions, options)
+    Object.assign(
+      this,
+      {sentence: ''},
+      defaultOptions,
+      options
+    )
 
     if (!_.isFunction(this.caption)) {
       this.caption = defaultCaption.bind(this)
