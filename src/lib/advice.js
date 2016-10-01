@@ -2,11 +2,12 @@ import _ from 'lodash'
 import fuzzysearch from 'fuzzysearch'
 
 import adviceList from './advice-list'
-import {generate} from './generator'
 
 export default class Advice {
   constructor (options) {
-    _.merge(this, options)
+    const defaultOptions = adviceList[adviceList.length - 1]
+
+    Object.assign(this, defaultOptions, options)
 
     if (!_.isFunction(this.caption)) {
       this.caption = defaultCaption.bind(this)
@@ -16,22 +17,17 @@ export default class Advice {
   static find (sentence) {
     // TODO: Create ArgumentError class for this case
     if (!sentence) {
-      return Promise.reject(new Error('Missing argument sentence'))
+      return new Error('Missing argument sentence')
     }
 
     sentence = sentence.trim()
-    const advice = _.find(
-      // TODO: Maybe, adviceList should be a constructor parameter.
-      // It will make this easier to test.
+    const adviceParams = _.find(
       adviceList,
       advice => advice.pattern.test(sentence)
     )
 
-    if (_.isUndefined(advice)) {
-      return Promise.reject(new Error('Meme could not be found'))
-    }
 
-    return Promise.resolve(new Advice({sentence, ...advice}))
+    return new Advice({sentence, ...adviceParams})
   }
 
   static search (sentence = '', options = {limit: Infinity, allowBlank: true}) {
@@ -52,10 +48,6 @@ export default class Advice {
     )
   }
 
-  generate (destinationDir) {
-    return generate(this.toMemeCaptainParams(), destinationDir)
-  }
-
   get matches () {
     if (this._matches) return this._matches
 
@@ -73,8 +65,8 @@ export default class Advice {
     return this.caption(this.matches).bottom
   }
 
-  toMemeCaptainParams () {
-    return [this.url, this.topCaption, this.bottomCaption]
+  get imageUrl () {
+    return this.url
   }
 }
 

@@ -26,6 +26,7 @@ export default class Consultation extends Component {
     super(props)
 
     this.state = {
+      advice: new Advice(),
       sentence: Sentence.ofOne(),
       error: null,
       imagePath: '',
@@ -73,7 +74,8 @@ export default class Consultation extends Component {
     const value = target.textContent
 
     this.setState({
-      sentence: this.state.sentence.assocAt(pos, value)
+      sentence: this.state.sentence.assocAt(pos, value),
+      advice: Advice.find(this.state.sentence.toPlainText())
     })
   }
 
@@ -126,7 +128,7 @@ export default class Consultation extends Component {
         <Autocomplete
           query={query}
           onSuggestionSelect={this.fillPrompt} />
-        <AdviceAnimalMacro />
+        <AdviceAnimalMacro advice={this.state.advice} />
         <Starfield />
       </section>
     )

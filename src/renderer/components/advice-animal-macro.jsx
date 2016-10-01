@@ -15,7 +15,7 @@ import ImageMacroMenu from '../menus/animal-advice.js'
 
 // Internal Modules
 import {copyFile} from '../../lib/utils'
-
+import Advice from '../../lib/advice'
 
 const {dialog} = remote
 const currentWindow = remote.getCurrentWindow()
@@ -46,13 +46,22 @@ export default class AdviceAnimalMacro extends Component {
           width: image.width
         })
 
-        const writer = createWriter(this.refs.canvas, image)
+        this.writer = createWriter(this.refs.canvas, image)
 
-        writer({
-          top: this.props.topCaption,
-          bottom: this.props.bottomCaption
+        this.writer({
+          top: this.props.advice.topCaption,
+          bottom: this.props.advice.bottomCaption
         })
       })
+  }
+
+  componentWillUpdate (nextProps) {
+    if (this.writer) {
+      this.writer({
+        top: nextProps.advice.topCaption,
+        bottom: nextProps.advice.bottomCaption
+      })
+    }
   }
 
   render () { 
@@ -75,14 +84,12 @@ export default class AdviceAnimalMacro extends Component {
 
 AdviceAnimalMacro.propTypes = {
   imagePath: PropTypes.string,
-  topCaption: PropTypes.string,
-  bottomCaption: PropTypes.string
+  advice: PropTypes.instanceOf(Advice)
 }
 
 AdviceAnimalMacro.defaultProps = {
   imagePath: 'http://i.imgur.com/yvFmCfU.jpg',
-  topCaption: 'Top Caption',
-  bottomCaption: 'Bottom Caption'
+  advice: new Advice()
 }
 
 function getImage(src) {
