@@ -1,4 +1,3 @@
-/* global Notification */
 import {kebabCase, isEmpty} from 'lodash'
 // Electron Modules
 import {clipboard, remote, nativeImage} from 'electron'
