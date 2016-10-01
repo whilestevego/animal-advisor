@@ -55,11 +55,11 @@ export default class Advice {
   }
 
   get topCaption () {
-    return this.caption(this.matches).top
+    return this.caption(this.matches).top.toUpperCase()
   }
 
   get bottomCaption () {
-    return this.caption(this.matches).bottom
+    return this.caption(this.matches).bottom.toUpperCase()
   }
 
   get imageUrl () {
