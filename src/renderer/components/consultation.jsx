@@ -104,8 +104,7 @@ export default class Consultation extends Component {
   componentDidMount () {
     document.body.addEventListener('keydown', this.handleGlobalKeyDown)
 
-    onCommand('generate-image', this.getImageMacro)
-    onCommand('clear-sentence', this.clearSentence)
+    onCommand('reset-macro', this.resetMacro)
   }
 
   componentWillUnmount () {

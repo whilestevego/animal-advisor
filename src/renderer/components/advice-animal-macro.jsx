@@ -31,6 +31,14 @@ export default class AdviceAnimalMacro extends Component {
     ImageMacroMenu.popup(currentWindow)
   }
 
+  saveImage = () => {
+    const {canvas} = this.refs
+    const image = nativeImage.createFromDataURL(canvas.toDataURL());
+
+    clipboard.writeImage(image)
+    sendNotification(canvas.toDataURL())
+  }
+
   loadImage = url => {
     getImage(url)
       .then(image => {

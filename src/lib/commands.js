@@ -6,9 +6,9 @@ export const keyBinds = new Map ([
   ['arrowdown', 'next-suggestion'],
   ['arrowup', 'previous-suggestion'],
   ['arrowright', 'choose-suggestion'],
-  ['ctrl+c', 'clear-sentence'],
-  ['escape', 'clear-sentence'],
-  ['enter', 'generate-image']
+  ['ctrl+c', 'reset-macro'],
+  ['escape', 'reset-macro'],
+  ['enter', 'save-image']
   //['backspace', 'join-left']
 ])
 
