@@ -11,6 +11,8 @@ const currentWindow = remote.getCurrentWindow()
 
 // This module contains a variety of unrelated utility functions. They should
 // organized into seperate files and possibly refactored
+
+/* FILESYSTEM */
 export function copyFile (sourcePath, destinationPath) {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(sourcePath)
@@ -27,6 +29,7 @@ export function copyFile (sourcePath, destinationPath) {
   })
 }
 
+/* PROMISES */
 export function timeout (promise, milliseconds) {
   return new Promise((resolve, reject) => {
     promise.then(resolve)
@@ -46,6 +49,7 @@ export function delay (milliseconds) {
   }
 }
 
+/* DOM */
 export function getImage(src) {
   return new Promise ((resolve, reject) => {
     const image = new Image()
@@ -61,6 +65,7 @@ export function getImage(src) {
   })
 }
 
+/* CANVAS */
 export function createWriter (cvs, image, font = 'Impact', fontSize = 100) {
   return text => {
     const ctx = cvs.getContext('2d')
@@ -144,6 +149,7 @@ export function rulerFor (fontName, fontSize) {
   }
 }
 
+/* OS INTERACTION */
 export function showSaveImageAsDialog (sourcePath) {
   dialog.showSaveDialog(
     currentWindow,
@@ -152,6 +158,14 @@ export function showSaveImageAsDialog (sourcePath) {
   )
 }
 
+export function saveImageAs (sourcePath, destinationPath) {
+  const ext = path.extname(sourcePath)
+  const destinationPathWithExt = `${destinationPath}${ext}`
+
+  copyFile(sourcePath, destinationPathWithExt).then(shell.showItemInFolder)
+}
+
+/* LISTS */
 export function pushInLast (arr, val) {
   if (arr.length <= 0) {
     arr.push([])
@@ -173,11 +187,4 @@ export function partitionBy (obj, fn) {
     prevTest = currentTest
     return newArr
   }, [])
-}
-
-export function saveImageAs (sourcePath, destinationPath) {
-  const ext = path.extname(sourcePath)
-  const destinationPathWithExt = `${destinationPath}${ext}`
-
-  copyFile(sourcePath, destinationPathWithExt).then(shell.showItemInFolder)
 }
