@@ -52,6 +52,10 @@ export function delay (milliseconds) {
 /* DOM */
 export function getImage(src) {
   return new Promise ((resolve, reject) => {
+    if (isEmpty(src)) {
+      reject(new TypeError('src must be path to image'))
+    }
+
     const image = new Image()
     image.addEventListener('load', () => {
       resolve(image)
