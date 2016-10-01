@@ -6,9 +6,6 @@ import {each, omit, range, reduce} from 'lodash'
 // Node Modules
 import path from 'path'
 
-// Packaged Library
-import genClass from 'classnames'
-
 // React and Components
 import React, {Component, PropTypes} from 'react'
 import ImageMacroMenu from '../menus/animal-advice.js'
@@ -34,12 +31,8 @@ export default class AdviceAnimalMacro extends Component {
     ImageMacroMenu.popup(currentWindow)
   }
 
-  componentDidMount () {
-    ImageMacroMenu.on('reset', () => {})
-    ImageMacroMenu.on('save-image-as', () => {})
-    ImageMacroMenu.on('copy', () => {})
-
-    getImage(this.props.imagePath)
+  loadImage = url => {
+    getImage(url)
       .then(image => {
         this.setState({
           height: image.height,
@@ -55,7 +48,19 @@ export default class AdviceAnimalMacro extends Component {
       })
   }
 
+  componentDidMount () {
+    ImageMacroMenu.on('reset', () => {})
+    ImageMacroMenu.on('save-image-as', () => {})
+    ImageMacroMenu.on('copy', () => {})
+
+  }
+
   componentWillUpdate (nextProps) {
+    console.log(nextProps.advice.imageUrl)
+    if (nextProps.advice.imageUrl != this.props.advice.imageUrl) {
+      this.loadImage(nextProps.advice.imageUrl)
+    }
+
     if (this.writer) {
       this.writer({
         top: nextProps.advice.topCaption,
@@ -65,12 +70,8 @@ export default class AdviceAnimalMacro extends Component {
   }
 
   render () { 
-    const cn = genClass({
-      [this.constructor.name]: true
-    })
-
     return (
-      <section className={cn}>
+      <section className={this.constructor.name}>
         <canvas
           width={this.state.width}
           height={this.state.height}

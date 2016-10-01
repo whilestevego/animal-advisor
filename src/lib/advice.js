@@ -66,7 +66,7 @@ export default class Advice {
   }
 
   get imageUrl () {
-    return this.url
+    return `http://memecaptain.com/src_images/${this.url}.jpg`
   }
 }
 
