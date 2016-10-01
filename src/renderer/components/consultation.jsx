@@ -5,7 +5,7 @@ import {clipboard, remote} from 'electron'
 // React and Components
 import React, {Component} from 'react'
 import DynamicPrompt from './dynamic-prompt'
-import ImageMacro from './image-macro'
+import AdviceAnimalMacro from './advice-animal-macro'
 import Autocomplete from './autocomplete'
 import Starfield from './starfield'
 
@@ -126,9 +126,7 @@ export default class Consultation extends Component {
         <Autocomplete
           query={query}
           onSuggestionSelect={this.fillPrompt} />
-        <ImageMacro
-          imagePath={this.state.imagePath}
-          isLoading={this.state.isLoading} />
+        <AdviceAnimalMacro />
         <Starfield />
       </section>
     )
