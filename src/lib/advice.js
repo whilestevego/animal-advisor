@@ -34,18 +34,15 @@ export default class Advice {
     const {limit, allowBlank} = options
     sentence = sentence.trim()
 
-    if (_.isEmpty(sentence) && !allowBlank) return Promise.resolve([]);
-    // TODO: Maybe, adviceList should be a constructor parameter.
-    // It will make this easier to test.
-    return Promise.resolve(
-      _(adviceList)
-        .filter(advice => fuzzysearch(
-          sentence.toLowerCase(),
-          (advice.help + advice.name).toLowerCase()
-        ))
-        .take(limit)
-        .value()
-    )
+    if (_.isEmpty(sentence) && !allowBlank) return [];
+
+    return _(adviceList)
+      .filter(advice => fuzzysearch(
+        sentence.toLowerCase(),
+        (advice.help + advice.name).toLowerCase()
+      ))
+      .take(limit)
+      .value()
   }
 
   get matches () {
