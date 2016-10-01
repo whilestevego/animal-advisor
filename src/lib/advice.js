@@ -26,7 +26,6 @@ export default class Advice {
       advice => advice.pattern.test(sentence)
     )
 
-
     return new Advice({sentence, ...adviceParams})
   }
 
@@ -37,10 +36,12 @@ export default class Advice {
     if (_.isEmpty(sentence) && !allowBlank) return [];
 
     return _(adviceList)
-      .filter(advice => fuzzysearch(
-        sentence.toLowerCase(),
-        (advice.help + advice.name).toLowerCase()
-      ))
+      .filter(
+        advice => fuzzysearch(
+          sentence.toLowerCase(),
+          (advice.help + advice.name).toLowerCase()
+        )
+      )
       .take(limit)
       .value()
   }
@@ -62,8 +63,9 @@ export default class Advice {
     return this.caption(this.matches).bottom.toUpperCase()
   }
 
+  //TODO: Put all the meme images in assets
   get imageUrl () {
-    return `http://memecaptain.com/src_images/${this.url}.jpg`
+    return this.url ? `http://memecaptain.com/src_images/${this.url}.jpg` : ''
   }
 }
 
