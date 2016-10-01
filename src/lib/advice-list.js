@@ -156,5 +156,10 @@ export default [
     help: 'i should {text}',
     url: 'LPTw8A',
     caption (matches) { return {top: '', bottom: matches[1]} }
+  }, {
+    name: '',
+    pattern: /(.*)(.*)/i,
+    help: '',
+    url: ''
   }
 ]

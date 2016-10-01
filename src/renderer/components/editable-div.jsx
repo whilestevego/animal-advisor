@@ -1,4 +1,5 @@
 /*global Range*/
+import {omit} from 'lodash'
 // React and Components
 import React, {PropTypes, Component} from 'react'
 
@@ -48,7 +49,7 @@ export default class EditableDiv extends Component {
       pos,
       onChange,
       ...restProps
-    } = this.props
+    } = omit(this.props, ['toFocus'])
 
     const {
       clearSelectionRanges,

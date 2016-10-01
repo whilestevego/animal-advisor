@@ -2,11 +2,17 @@ import _ from 'lodash'
 import fuzzysearch from 'fuzzysearch'
 
 import adviceList from './advice-list'
-import {generate} from './generator'
 
 export default class Advice {
   constructor (options) {
-    _.merge(this, options)
+    const defaultOptions = adviceList[adviceList.length - 1]
+
+    Object.assign(
+      this,
+      {sentence: ''},
+      defaultOptions,
+      options
+    )
 
     if (!_.isFunction(this.caption)) {
       this.caption = defaultCaption.bind(this)
@@ -16,44 +22,33 @@ export default class Advice {
   static find (sentence) {
     // TODO: Create ArgumentError class for this case
     if (!sentence) {
-      return Promise.reject(new Error('Missing argument sentence'))
+      return new Error('Missing argument sentence')
     }
 
     sentence = sentence.trim()
-    const advice = _.find(
-      // TODO: Maybe, adviceList should be a constructor parameter.
-      // It will make this easier to test.
+    const adviceParams = _.find(
       adviceList,
       advice => advice.pattern.test(sentence)
     )
 
-    if (_.isUndefined(advice)) {
-      return Promise.reject(new Error('Meme could not be found'))
-    }
-
-    return Promise.resolve(new Advice({sentence, ...advice}))
+    return new Advice({sentence, ...adviceParams})
   }
 
   static search (sentence = '', options = {limit: Infinity, allowBlank: true}) {
     const {limit, allowBlank} = options
     sentence = sentence.trim()
 
-    if (_.isEmpty(sentence) && !allowBlank) return Promise.resolve([]);
-    // TODO: Maybe, adviceList should be a constructor parameter.
-    // It will make this easier to test.
-    return Promise.resolve(
-      _(adviceList)
-        .filter(advice => fuzzysearch(
+    if (_.isEmpty(sentence) && !allowBlank) return [];
+
+    return _(adviceList)
+      .filter(
+        advice => fuzzysearch(
           sentence.toLowerCase(),
           (advice.help + advice.name).toLowerCase()
-        ))
-        .take(limit)
-        .value()
-    )
-  }
-
-  generate (destinationDir) {
-    return generate(this.toMemeCaptainParams(), destinationDir)
+        )
+      )
+      .take(limit)
+      .value()
   }
 
   get matches () {
@@ -66,15 +61,16 @@ export default class Advice {
   }
 
   get topCaption () {
-    return this.caption(this.matches).top
+    return this.caption(this.matches).top.toUpperCase()
   }
 
   get bottomCaption () {
-    return this.caption(this.matches).bottom
+    return this.caption(this.matches).bottom.toUpperCase()
   }
 
-  toMemeCaptainParams () {
-    return [this.url, this.topCaption, this.bottomCaption]
+  //TODO: Put all the meme images in assets
+  get imageUrl () {
+    return this.url ? `http://memecaptain.com/src_images/${this.url}.jpg` : ''
   }
 }
 
