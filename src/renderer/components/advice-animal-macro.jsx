@@ -35,7 +35,6 @@ export default class AdviceAnimalMacro extends Component {
     const image = nativeImage.createFromDataURL(canvas.toDataURL());
 
     clipboard.writeImage(image)
-    sendNotification(canvas.toDataURL())
   }
 
   loadImage = url => {
@@ -107,13 +106,4 @@ AdviceAnimalMacro.propTypes = {
 
 AdviceAnimalMacro.defaultProps = {
   advice: new Advice()
-}
-
-function sendNotification (path) {
-  const title = 'Animal Advisor'
-  const options = {
-    body: 'Copied advice animal to clipboard',
-    icon: path
-  }
-  return new Notification(title, options)
 }
