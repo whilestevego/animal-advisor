@@ -1,7 +1,3 @@
-/*global Notification */
-// Electron Modules
-import {clipboard, remote} from 'electron'
-
 // React and Components
 import React, {Component} from 'react'
 import DynamicPrompt from './dynamic-prompt'
@@ -18,8 +14,6 @@ import {
   hasKeyCombo,
   toKeyCombo
 } from '../../lib/commands'
-
-const pathTo = remote.getGlobal('pathTo')
 
 export default class Consultation extends Component {
   constructor (props) {
@@ -38,31 +32,6 @@ export default class Consultation extends Component {
     return this.state.error ? this.state.error.message : ''
   }
 
-  getImageMacro = () => {
-    this.setState({error: null, isLoading: true, imagePath: ''})
-
-    Advice
-      .find(this.state.sentence.toPlainText())
-      .then(advice => advice.generate(pathTo.cache))
-      .then(imagePath => {
-        this.setState({
-          imagePath,
-          sentence: Sentence.ofOne(),
-          isLoading: false
-        })
-
-        clipboard.writeImage(imagePath)
-        sendNotification(imagePath)
-      })
-      .catch(error => {
-        this.setState({
-          error,
-          sentence: Sentence.ofOne(),
-          isLoading: false
-        })
-      })
-  }
-
   hasSuggestion = () => {
     return this.state.sentence.hasUneditables()
   }
@@ -79,9 +48,10 @@ export default class Consultation extends Component {
     })
   }
 
-  clearSentence = () => {
+  resetMacro = () => {
     this.setState({
       sentence: Sentence.ofOne(),
+      advice: new Advice(),
       error: null
     })
   }
@@ -132,13 +102,4 @@ export default class Consultation extends Component {
       </section>
     )
   }
-}
-
-function sendNotification (path) {
-  const title = 'Animal Advisor'
-  const options = {
-    body: 'Copied advice animal to clipboard',
-    icon: path
-  }
-  return new Notification(title, options)
 }

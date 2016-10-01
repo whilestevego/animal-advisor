@@ -1,7 +1,7 @@
-/* global Image */
+/* global Image Notification */
 // Electron Modules
-import {clipboard, remote, shell} from 'electron'
-import {each, omit, range, reduce} from 'lodash'
+import {clipboard, remote, shell, nativeImage} from 'electron'
+import {kebabCase, each, omit, reduce} from 'lodash'
 
 // Node Modules
 import path from 'path'
@@ -11,8 +11,9 @@ import React, {Component, PropTypes} from 'react'
 import ImageMacroMenu from '../menus/animal-advice.js'
 
 // Internal Modules
-import {copyFile} from '../../lib/utils'
 import Advice from '../../lib/advice'
+import {copyFile} from '../../lib/utils'
+import {onCommand} from '../../lib/commands'
 
 const {dialog} = remote
 const currentWindow = remote.getCurrentWindow()
@@ -61,10 +62,10 @@ export default class AdviceAnimalMacro extends Component {
     ImageMacroMenu.on('save-image-as', () => {})
     ImageMacroMenu.on('copy', () => {})
 
+    onCommand('save-image', this.saveImage)
   }
 
   componentWillUpdate (nextProps) {
-    console.log(nextProps.advice.imageUrl)
     if (nextProps.advice.imageUrl != this.props.advice.imageUrl) {
       this.loadImage(nextProps.advice.imageUrl)
     }
@@ -92,12 +93,10 @@ export default class AdviceAnimalMacro extends Component {
 }
 
 AdviceAnimalMacro.propTypes = {
-  imagePath: PropTypes.string,
   advice: PropTypes.instanceOf(Advice)
 }
 
 AdviceAnimalMacro.defaultProps = {
-  imagePath: 'http://i.imgur.com/yvFmCfU.jpg',
   advice: new Advice()
 }
 
@@ -235,4 +234,13 @@ function saveImageAs (sourcePath, destinationPath) {
   const destinationPathWithExt = `${destinationPath}${ext}`
 
   copyFile(sourcePath, destinationPathWithExt).then(shell.showItemInFolder)
+}
+
+function sendNotification (path) {
+  const title = 'Animal Advisor'
+  const options = {
+    body: 'Copied advice animal to clipboard',
+    icon: path
+  }
+  return new Notification(title, options)
 }

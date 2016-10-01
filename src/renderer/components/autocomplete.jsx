@@ -22,9 +22,8 @@ export default class Autocomplete extends Component {
   }
 
   fetchSuggestions (query) {
-    Advice
-      .search(query, {limit: 10, allowBlank: false})
-      .then(results => {this.setState({results, selectionIndex: 0})})
+    const results = Advice.search(query, {limit: 10, allowBlank: false})
+    this.setState({results, selectionIndex: 0})
   }
 
   // EVENT HANDLERS
