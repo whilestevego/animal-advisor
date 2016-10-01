@@ -27,12 +27,6 @@ export function copyFile (sourcePath, destinationPath) {
   })
 }
 
-export function savePathFromResponse (response, destinationDir) {
-  const extension = /image\/(\w+)\b/.exec(response.headers['content-type'])[1]
-  const filename = response.headers['meme-name'].replace(/[^A-Za-z+]/g, '').replace(/\+/g, '-')
-  return `${destinationDir}/${filename}.${extension}`
-}
-
 export function timeout (promise, milliseconds) {
   return new Promise((resolve, reject) => {
     promise.then(resolve)
