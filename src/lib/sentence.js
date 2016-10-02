@@ -163,5 +163,3 @@ function splitByDelimeters (
 
   return fields
 }
-
-window.Sentence = Sentence
