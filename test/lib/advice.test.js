@@ -1,6 +1,6 @@
 /* global describe it */
 import assert from 'assert'
-import Advice from '../src/lib/advice'
+import Advice from '../../src/lib/advice'
 
 describe('Advice', () => {
   describe('.find', () => {
