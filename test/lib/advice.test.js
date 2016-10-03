@@ -12,7 +12,7 @@ const advices = [
 describe('Advice', () => {
   describe('.find', () => {
     describe('when searching without a string', () => {
-      it('throw a TypeError', () => {
+      it('should throw a TypeError', () => {
         const fn = () => {
           Advice.find(1)
         }
@@ -20,7 +20,7 @@ describe('Advice', () => {
       })
     })
 
-    describe('when searching for empty string', () => {
+    describe('when searching for an empty string', () => {
       //TODO: Should it throw an error instead or return null/undefined?
       it('should return empty advice', () => {
         const advice = Advice.find('')
