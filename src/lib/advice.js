@@ -21,17 +21,22 @@ export default class Advice {
 
   static find (sentence) {
     // TODO: Create ArgumentError class for this case
-    if (!sentence) {
-      return new Error('Missing argument sentence')
+    //
+    const argType = typeof sentence
+    if (argType != 'string') {
+      throw new TypeError(`Expected string but received ${argType}`)
     }
 
-    sentence = sentence.trim()
+    const trimmedSentence = sentence.trim()
     const adviceParams = _.find(
       adviceList,
-      advice => advice.pattern.test(sentence)
+      advice => advice.pattern.test(trimmedSentence)
     )
 
-    return new Advice({sentence, ...adviceParams})
+    return new Advice({
+      sentence: trimmedSentence,
+      ...adviceParams
+    })
   }
 
   static search (sentence = '', options = {limit: Infinity, allowBlank: true}) {
