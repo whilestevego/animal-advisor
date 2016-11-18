@@ -5,7 +5,7 @@ const packager = require('electron-packager')
 const install = require('gulp-install')
 const runSequence = require('run-sequence')
 const info = require('../package.json')
-const electronInfo = require('../node_modules/electron-prebuilt/package.json')
+const electronInfo = require('../node_modules/electron/package.json')
 
 gulp.task('install', () => {
   return gulp
